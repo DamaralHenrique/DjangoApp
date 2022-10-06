@@ -21,7 +21,7 @@ The classes diagrams can be found in the `/assests/images` folder
 
 ![class_diagram](assets/images/Diagrama_classes.png)
 
-## Quick Start
+## 🚀 Quick Start
 
 To get this project up and running locally on your computer:
 1. Create a virtual environment and activate it using the following commands:
@@ -40,4 +40,12 @@ To get this project up and running locally on your computer:
    python manage.py runserver
    ```
    
-4. If everything went well, the following message will be shown on the terminal: "Starting development server at http://127.0.0.1:8000". You will then be able to open `http://localhost:8000` 
+4. If everything went well, the following message will be shown on the terminal: "Starting development server at http://127.0.0.1:8000". You will then be able to open `http://localhost:8000`, and the following message will appear **"PCS3643 - Laboratório de Engenharia de Software I"**
+
+## 🧪 Testing
+
+The tests are defined in the `flight\test.py` file. To execute them, run:
+
+```
+python manage.py test
+```
