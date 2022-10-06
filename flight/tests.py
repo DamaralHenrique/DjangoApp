@@ -7,7 +7,7 @@ class StatusVooTest(TestCase):
     def setUpTestData(cls):
         StatusVoo.objects.create(id=1, titulo='Em rota')
     
-    def test_create_id(self):
+    def test_create_read_id(self):
         status_1 = StatusVoo.objects.get(id=1)
         self.assertEqual(status_1.id, 1)
         self.assertEqual(status_1.titulo, 'Em rota')
@@ -63,7 +63,7 @@ class ConexaoModelTest(TestCase):
                                num_conexao=321,
                                titulo='GRU')
     
-    def test_create_conexao(self):
+    def test_create_read_conexao(self):
         conexao_1 = Conexao.objects.get(id=1)
         self.assertEqual(conexao_1.id, 1)
         self.assertEqual(conexao_1.num_conexao, 321)
@@ -95,7 +95,7 @@ class VooTest(TestCase):
                            partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
                            companhia_aerea="Companhia 1")
 
-    def test_create_voo(self):
+    def test_create_read_voo(self):
         voo_teste = Voo.objects.get(id=1234)
         self.assertEqual(voo_teste.id, 1234)
         self.assertEqual(voo_teste.chegada_prevista.strftime("%Y-%m-%d %H:%M:%S"), "2022-06-10 16:00:00")
@@ -141,7 +141,7 @@ class VooDinamicoTest(TestCase):
                                    partida_real=datetime.datetime(2022, 8, 15, 21, 13), 
                                    chegada_real=datetime.datetime(2022, 8, 16,  9, 43))
 
-    def test_create_voo_dinamico(self):
+    def test_create_read_voo_dinamico(self):
         voo_din_1 = VooDinamico.objects.get(id=1)
         self.assertEqual(voo_din_1.id, 1)
         self.assertEqual(voo_din_1.voo.id, 1)
