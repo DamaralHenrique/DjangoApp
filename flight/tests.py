@@ -1,12 +1,12 @@
 from django.test import TestCase
 import datetime
-
 from flight.models import *
 
 class StatusVooTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         StatusVoo.objects.create(id=1, titulo='Em rota')
+    
     def test_create_id(self):
         status_1 = StatusVoo.objects.get(id=1)
         self.assertEqual(status_1.id, 1)
@@ -32,17 +32,16 @@ class RotaTest(TestCase):
                             aeroporto_partida='Sao Paulo',
                             aeroporto_chegada='Londres')
 
-    def test_create_visualizacao_rota(self):
+    def test_create_read_rota(self):
         rota_1 = Rota.objects.get(id=1)
         self.assertEqual(rota_1.id, 1)
         self.assertEqual(rota_1.aeroporto_partida, 'Sao Paulo')
         self.assertEqual(rota_1.aeroporto_chegada, 'Londres')
 
     def test_update_rota(self):
-        Rota.objects.filter(id = 1).update(aeroporto_partida='Rio de Janeiro',
-                                           aeroporto_chegada='Acre')
-        
-        rota_atualizada = Rota.objects.get(id = 1)
+        Rota.objects.filter(id=1).update(aeroporto_partida='Rio de Janeiro',
+                                         aeroporto_chegada='Acre')   
+        rota_atualizada = Rota.objects.get(id=1)
         self.assertEqual(rota_atualizada.id, 1)
         self.assertEqual(rota_atualizada.aeroporto_partida, 'Rio de Janeiro')
         self.assertEqual(rota_atualizada.aeroporto_chegada, 'Acre')
@@ -73,7 +72,6 @@ class ConexaoModelTest(TestCase):
     def test_update_conexao(self):
         Conexao.objects.filter(id = 1).update(num_conexao=123,
                                               titulo='CONG')
-        
         conexao_atualizada = Conexao.objects.get(id = 1)
         self.assertEqual(conexao_atualizada.id, 1)
         self.assertEqual(conexao_atualizada.num_conexao, 123)
@@ -85,14 +83,12 @@ class ConexaoModelTest(TestCase):
         tamFinal = len(Conexao.objects.all())
         self.assertEqual(tamFinal, tamOrig - 1)  
         
-
-
 class VooTest(TestCase):
     @classmethod
     def setUpTestData(cls):
         rota = Rota.objects.create(id=123, 
-                            aeroporto_partida="Aeroporto 1", 
-                            aeroporto_chegada="Aeroporto 2")
+                                   aeroporto_partida="Aeroporto 1", 
+                                   aeroporto_chegada="Aeroporto 2")
         Voo.objects.create(id=1234,
                            rota=rota,
                            chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
@@ -111,10 +107,9 @@ class VooTest(TestCase):
 
     def test_update_voo(self):
         voo_teste = Voo.objects.get(id=1234)
-        Voo.objects.filter(id=voo_teste.id).update(
-            partida_prevista=datetime.datetime(2022, 10, 10, 16, 00), 
-            chegada_prevista=datetime.datetime(2022, 10, 10, 10, 00),
-            companhia_aerea="Companhia 2")
+        Voo.objects.filter(id=voo_teste.id).update(partida_prevista=datetime.datetime(2022, 10, 10, 16, 00), 
+                                                   chegada_prevista=datetime.datetime(2022, 10, 10, 10, 00),
+                                                   companhia_aerea="Companhia 2")
         voo_teste = Voo.objects.get(id=1234)
         self.assertEqual(voo_teste.id, 1234)
         self.assertNotEqual(voo_teste.companhia_aerea, "Companhia 1")
@@ -133,19 +128,18 @@ class VooDinamicoTest(TestCase):
     def setUpTestData(cls):
         status = StatusVoo.objects.create(id=1, titulo='Em rota')
         rota = Rota.objects.create(id=123, 
-                            aeroporto_partida="Aeroporto 1", 
-                            aeroporto_chegada="Aeroporto 2")
+                                   aeroporto_partida="Aeroporto 1", 
+                                   aeroporto_chegada="Aeroporto 2")
         voo = Voo.objects.create(id=1,
-            rota=rota,
-            partida_prevista=datetime.datetime(2022, 8, 15, 22, 15), 
-            chegada_prevista=datetime.datetime(2022, 8, 16,  9, 30), 
-            companhia_aerea="Ponei aerlines")
-        VooDinamico.objects.create(
-            id=1, 
-            voo=voo, 
-            status=status,
-            partida_real=datetime.datetime(2022, 8, 15, 21, 13), 
-            chegada_real=datetime.datetime(2022, 8, 16,  9, 43))
+                                 rota=rota,
+                                 partida_prevista=datetime.datetime(2022, 8, 15, 22, 15), 
+                                 chegada_prevista=datetime.datetime(2022, 8, 16,  9, 30), 
+                                 companhia_aerea="Ponei aerlines")
+        VooDinamico.objects.create(id=1, 
+                                   voo=voo, 
+                                   status=status,
+                                   partida_real=datetime.datetime(2022, 8, 15, 21, 13), 
+                                   chegada_real=datetime.datetime(2022, 8, 16,  9, 43))
 
     def test_create_voo_dinamico(self):
         voo_din_1 = VooDinamico.objects.get(id=1)
@@ -157,9 +151,8 @@ class VooDinamicoTest(TestCase):
 
     def test_update_voo_dinamico(self):
         voo_din_1 = VooDinamico.objects.get(id=1)
-        VooDinamico.objects.filter(id=voo_din_1.id).update(
-            partida_real=datetime.datetime(2022, 10, 15, 21, 13), 
-            chegada_real=datetime.datetime(2022, 10, 16,  9, 43))
+        VooDinamico.objects.filter(id=voo_din_1.id).update(partida_real=datetime.datetime(2022, 10, 15, 21, 13), 
+                                                           chegada_real=datetime.datetime(2022, 10, 16,  9, 43))
         voo_din_2 = VooDinamico.objects.get(id=1)
         self.assertEqual(voo_din_2.id, 1)
         self.assertEqual(voo_din_2.voo.id, 1)

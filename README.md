@@ -17,7 +17,7 @@
 The project technical description can be found on the `assets/` folder:
 - Use cases: [Casos_de_uso.pdf](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/Casos_de_uso.pdf)
 
-The classes diagrams can be found in the `/assests/images` folder
+The classes diagrams and DER can be found in the `/assests/images` folder
 
 ![class_diagram](assets/images/Diagrama_classes.png)
 
