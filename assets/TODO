@@ -1,0 +1,10 @@
+OBS: tem até sexta (ou final de semana, de acordo com semana passada, mas é melhor perguntar)
+
+- Diagrama de navegação
+    - Tela inicial: login (nível 0)
+    - Tela inicial de navegação (nível 1)
+    - Telas habilitadas dependendo de quem fez login
+- Código
+    - Tela de login, navegação e casos de uso (v0)
+    - tela básica após login (dependendo do tipo de usuário)
+    

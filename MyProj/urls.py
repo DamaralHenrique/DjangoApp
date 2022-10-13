@@ -19,5 +19,7 @@ from flight import views
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', views.flightviews),
+    path('', views.loginViews),
+    path('home/', views.telaInicialViews),
+    # path()
 ]

@@ -17,7 +17,10 @@
 The project technical description can be found on the `assets/` folder:
 - Use cases: [Casos_de_uso.pdf](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/Casos_de_uso.pdf)
 
-The classes diagrams and DER can be found in the `/assests/images` folder
+The folder `/assests/images` contains the following diagrams:
+- Classes diagrams (class 3);
+- DER (class 6);
+- Use cases navigation diagram (class 7).
 
 ![class_diagram](assets/images/Diagrama_classes.png)
 
@@ -49,3 +52,7 @@ The tests are defined in the `flight\test.py` file. To execute them, run:
 ```
 python manage.py test
 ```
+
+
+## REF
+The Django Template used is referenced from Thales Bruno: https://github.com/thalesbruno/django_bootstrap
