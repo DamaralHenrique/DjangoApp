@@ -1,1 +1,119 @@
-Gerar relatório
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Exemplo de integração com Bootstrap</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Nome da empresa
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">
+                Gerar relatório
+            </h1>
+            <p class="lead">
+                Preencha as configurações para gerar o relatório.
+            </p>
+            <hr class="my-4">
+            <p>
+                Confirmar operação:
+            </p>
+            <div class="row">
+                <a href="../"
+                    class="btn btn-primary"
+                    style="margin-right: 10px">
+                    DESCARTAR
+                </a>
+                <a href="preview_relatorio/"
+                    class="btn btn-primary">
+                    GERAR RELATÓRIO
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Tipos de relatório
+                        </h5>
+                        <p class="card-text">
+                            Escolha o tipo de relatório a ser gerado:
+                        </p>
+                        <div class="row">
+                            <a class="btn btn-primary" style="margin-right: 10px">
+                                Partidas e chegadas por empresas
+                            </a>
+                            <a class="btn btn-primary">
+                                Movimentação de voos por período
+                            </a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Inicio e Fim do voo
+                        </h5>
+                        <p class="card-text">
+                            [campo de preenchimento/form]
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Companhia aérea
+                        </h5>
+                        <p class="card-text">
+                            [campo de preenchimento/form]
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Tipo de voo
+                        </h5>
+                        <p class="card-text">
+                            [campo de preenchimento/form]
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</body>
+
+<script src="js/myscript.js"></script>
+
+</html>

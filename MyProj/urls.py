@@ -25,7 +25,7 @@ urlpatterns = [
     path('home/monitoramento_painel/monitoramento_atualizacao/', views.telaAtualizarMonitoramentoViews),
     path('home/monitoramento_painel/monitoramento_voo/', views.telaMonitoramentoViews),
     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
-    path('home/gerar_relatorio/preview_relatorio', views.telaPreviewRelatorioViews),
+    path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews),
     path('home/lista_voos/', views.telaListaVoosViews),
     path('home/lista_voos/update/', views.telaUpdateVooViews),
     path('home/lista_voos/create/', views.telaCreateVooViews),

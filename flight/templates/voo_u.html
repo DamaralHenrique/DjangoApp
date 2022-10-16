@@ -1,0 +1,58 @@
+<!-- <a class="btn btn-primary" href="/admin-url">Useradministration</a> -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Exemplo de integração com Bootstrap</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Nome da empresa
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">
+                Atualização de Voo
+            </h1>
+            <p class="lead">
+                Edite os campos disponíveis das informações do voo.
+            </p>
+            <hr class="my-4">
+            <p>
+                Confirme as edições:
+            </p>
+            <div class="row">
+                <a href="../"
+                    class="btn btn-primary"
+                    style="margin-right: 10px">
+                    CANCELAR
+                </a>
+                <!-- alterar para função de deleção -->
+                <a href="../"
+                    class="btn btn-primary">
+                    CONFIRMAR
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- TO DO: add forms and inputs -->
+
+</body>
+
+</html>

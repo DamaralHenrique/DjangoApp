@@ -1,0 +1,158 @@
+ <!-- <a class="btn btn-primary" href="/admin-url">Useradministration</a> -->
+
+{% load static %}
+
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
+    <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
+    <script src="{% static 'js/bootstrap.min.js' %}"></script>
+    <title>Exemplo de integração com Bootstrap</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Nome da empresa
+            </a>
+        </div>
+    </nav>
+
+    <div class="container">
+        <div class="jumbotron">
+            <h1 class="display-4">
+                Visualização do voo
+            </h1>
+            <p class="lead">
+                Dados do voo selecionado.
+            </p>
+            <hr class="my-4">
+            <p>
+                Escolha uma operação:
+            </p>
+            <div class="row">
+                <a href="../"
+                    class="btn btn-primary"
+                    style="margin-right: 10px">
+                    VOLTAR
+                </a>
+                <a href="update/"
+                    class="btn btn-primary"
+                    style="margin-right: 10px">
+                    ATUALIZAR
+                </a>
+                <!-- alterar para função de deleção -->
+                <a href="../"
+                    class="btn btn-primary">
+                    DELETAR
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Companhia aérea
+                        </h5>
+                        <p class="card-text">
+                            Nome ou ID ca companhia
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Número/código do voo de partida
+                        </h5>
+                        <p class="card-text">
+                            Numero
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Número/código do voo de chegada
+                        </h5>
+                        <p class="card-text">
+                            Código
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Rota
+                        </h5>
+                        <p class="card-text">
+                            Dados da rota
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Local de Partida
+                        </h5>
+                        <p class="card-text">
+                            Local
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Local de Destino
+                        </h5>
+                        <p class="card-text">
+                            Local
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Previsão de sua saída/partida e chegada
+                        </h5>
+                        <p class="card-text">
+                            Partida: Data e hora
+                        </p>
+                        <p class="card-text">
+                            Chegada: Data e hora
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
