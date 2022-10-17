@@ -53,6 +53,28 @@ The tests are defined in the `flight\test.py` file. To execute them, run:
 python manage.py test
 ```
 
+### Login test
+
+Use the following credentials to test the login for each function:
+
+```
+{
+   id: "operador",
+   password: "qwer",
+},
+{
+   id: "funcionario",
+   password: "qwer",
+},
+{
+   id: "gerente",
+   password: "qwer",
+},
+
+```
+
+The visible pages for each function can be found in the "diagrama_casos-de_uso.png" image, which is inside the `assests` folder
+
 
 ## REF
 The Django Template used is referenced from Thales Bruno: https://github.com/thalesbruno/django_bootstrap
