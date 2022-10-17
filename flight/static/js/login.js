@@ -1,23 +1,22 @@
 var LOGINS = [
     {
+        id: "operador",
+        name: "Milenha",
+        password: "qwer",
+        post: 1,
+    },
+    {
         id: "funcionario",
         name: "Arthur",
         password: "qwer",
-        post: 1,
+        post: 2,
     },
     {
         id: "gerente",
         name: "Juliano",
         password: "qwer",
-        post: 2,
-    },
-    {
-        id: "operador",
-        name: "Milenha",
-        password: "qwer",
         post: 3,
     },
-
 ]
 
 function login(){
@@ -39,7 +38,9 @@ function login(){
         const nextState = { name, post };
         const nextTitle = "home";
         window.history.pushState(nextState, nextTitle, url);
-    }else{
+        localStorage.setItem('name', name);
+        localStorage.setItem('post', post);
+    } else{
         alert("Credenciais inválidas");
     }
 }

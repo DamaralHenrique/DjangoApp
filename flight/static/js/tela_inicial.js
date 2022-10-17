@@ -1,8 +1,6 @@
-const state = window.history.state;
+const id_funcao = localStorage.getItem('post');
 
-alert(state);
-
-if(state.post == 1) {
+if(id_funcao == 1) {
     document.getElementById("flight-monitor").style.visibility="hidden";
     document.getElementById("flight-monitor").style.position="absolute";
 
@@ -10,7 +8,7 @@ if(state.post == 1) {
     document.getElementById("flight-report").style.position="absolute";
 }
 
-if(state.post == 2) {
+if(id_funcao == 2) {
     document.getElementById("flight-manegement").style.visibility="hidden";
     document.getElementById("flight-manegement").style.position="absolute";
 
@@ -18,7 +16,7 @@ if(state.post == 2) {
     document.getElementById("flight-report").style.position="absolute";
 }
 
-if(state.post == 3) {
+if(id_funcao == 3) {
     document.getElementById("flight-monitor").style.visibility="hidden";
     document.getElementById("flight-monitor").style.position="absolute";
 
