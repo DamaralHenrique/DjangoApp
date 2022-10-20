@@ -49,14 +49,14 @@ To get this project up and running locally on your computer:
 
 Creating a database to make tests (repeat these steps after modifying the python files):
 1. On the menage.py script folder:
-'''
+```
 python manage.py makemigrations
-'''
+```
 
 2. To create the database, execute:
-'''
+```
 python menage.py migrate
-''' 
+```
 
 3. The tests are defined in the `flight\test.py` file. To execute them, run:
 ```
