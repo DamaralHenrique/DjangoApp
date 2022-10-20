@@ -1,18 +1,22 @@
 from django.shortcuts import render
 
-# Create your views here.
+# VIEWS INICIAIS 
 def loginViews(request):
     return render(request, "login.html")
 
 def telaInicialViews(request):
     return render(request, "tela_inicial.html")
 
+
+# RELATORIO
 def telaGerarRelatorioViews(request):
     return render(request, "relatorio_gerar.html")
 
 def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html")
 
+
+# MONITORAMENTO
 def telaPainelMonitoramentoViews(request):
     return render(request, "monitoramento_painel.html")
 
@@ -22,6 +26,8 @@ def telaMonitoramentoViews(request):
 def telaAtualizarMonitoramentoViews(request):
     return render(request, "monitoramento_atualizacao.html")
 
+
+# CRUD VOOS
 def telaListaVoosViews(request):
     return render(request, "voo_lista.html")
 
