@@ -1,4 +1,12 @@
+import datetime
+
+from django.shortcuts import get_object_or_404
+from django.http import HttpResponseRedirect
+from django.urls import reverse
+
 from django.shortcuts import render
+
+from flight.forms import DataForm
 
 # VIEWS INICIAIS 
 def loginViews(request):
@@ -10,6 +18,29 @@ def telaInicialViews(request):
 
 # RELATORIO
 def telaGerarRelatorioViews(request):
+
+    voo_instance = get_object_or_404(VooInstance, pk=pk)
+
+
+    if request.method == 'POST':
+
+        form = DataForm(request.POST)
+
+
+        if form.is_valid():
+            voo_instance.due_back = form.cleaned_data['renewal_date']
+            voo_instance.save()
+            return HttpResponseRedirect(reverse('all-borrowed'))
+
+    else:
+        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
+        form = DataForm(initial={'renewal_date': proposed_renewal_date})
+
+    context = {
+        'form': form,
+        'voo_instance': voo_instance,
+    }
+
     return render(request, "relatorio_gerar.html")
 
 def telaPreviewRelatorioViews(request):

@@ -36,17 +36,27 @@
             </p>
             <div class="row">
                 <a href="../"
-                    class="btn btn-primary"
-                    style="margin-right: 10px">
+                   class="btn btn-primary"
+                   style="margin-right: 10px">
                     DESCARTAR
                 </a>
                 <a href="preview_relatorio/"
-                    class="btn btn-primary">
+                   class="btn btn-primary">
                     GERAR RELATÓRIO
                 </a>
             </div>
         </div>
     </div>
+     
+    <script type="text/javascript">
+    function showDiv(select){
+        if(select.value==1){
+            document.getElementById('hidden_div').style.display = "block";
+        } else{
+            document.getElementById('hidden_div').style.display = "none";
+        }
+    } 
+    </script>
 
     <div class="container">
         <div class="row">
@@ -59,14 +69,17 @@
                         <p class="card-text">
                             Escolha o tipo de relatório a ser gerado:
                         </p>
-                        <div class="row">
-                            <a class="btn btn-primary" style="margin-right: 10px">
-                                Partidas e chegadas por empresas
-                            </a>
-                            <a class="btn btn-primary">
+
+                        <select id="test"
+                                name="form_select"
+                                onchange="showDiv(this)">
+                            <option value="0">
                                 Movimentação de voos por período
-                            </a>
-                        </div>
+                            </option>
+                            <option value="1">
+                                Partidas e chegadas por empresas
+                            </option>
+                         </select>
                     </div>
                 </div>
             </div>
@@ -78,42 +91,93 @@
                             Inicio e Fim do voo
                         </h5>
                         <p class="card-text">
-                            [campo de preenchimento/form]
-                        </p>
-                    </div>
-                </div>
-            </div>
 
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Companhia aérea
-                        </h5>
-                        <p class="card-text">
-                            [campo de preenchimento/form]
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Tipo de voo
-                        </h5>
-                        <p class="card-text">
-                            [campo de preenchimento/form]
+                            <form action="" method="post">
+                                {% csrf_token %}
+                                <table>
+                                    <tr>
+                                        <td>
+                                            <input id="id_inicio"
+                                                   name="data_inicio"
+                                                   type="text"
+                                                   value="2016-11-08"
+                                                   required />
+                                            <br/>
+                                            <span class="helptext"
+                                                  style="margin-right: 10px">
+                                                Data de inicio do voo (ex: 2016-11-08).
+                                            </span>
+                                        </td>
+                                        <td>
+                                            <input id="id_fim"
+                                                   name="data_fim"
+                                                   type="text"
+                                                   value="2016-11-09"
+                                                   required />
+                                            <br />
+                                            <span class="helptext">Data de fim do voo.</span>
+                                        </td>
+                                    </tr>
+                                </table>
+                                <input type="submit" value="Submit">
+                              </form>                   
                         </p>
                     </div>
                 </div>
             </div>
         </div>
+
+        <hr class="my-4">
+
+        <div id="hidden_div" style="display:none;">
+            <div class="row">
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Companhia aérea
+                            </h5>
+                            <p class="card-text">
+                                <select id="id_companhia"
+                                        name="companhia"
+                                        onchange="showDiv(this)">
+                                    <option value="0">
+                                        0
+                                    </option>
+                                    <option value="1">
+                                        1
+                                    </option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+    
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Tipo de voo
+                            </h5>
+                            <p class="card-text">
+                                <select id="id_voo"
+                                        name="voo"
+                                        onchange="showDiv(this)">
+                                    <option value="0">
+                                        0
+                                    </option>
+                                    <option value="1">
+                                        1
+                                    </option>
+                                </select>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </div>
     </div>
 
 </body>
-
-<script src="js/myscript.js"></script>
-
 </html>
