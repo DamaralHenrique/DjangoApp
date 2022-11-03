@@ -65,37 +65,39 @@
                             Companhia aérea
                         </h5>
                         <p class="card-text">
-                            {{voo.}}
+                            {{voo.companhia_aerea}}
                         </p>
                     </div>
                 </div>
             </div>
 
-            <div class="col-sm-6">
+            <!-- TODO: ARRUMAR -->
+            <!-- <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
                             Número/código do voo de partida
                         </h5>
                         <p class="card-text">
-                            Numero
+                            {{voo.codigo_partida}}
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
-            <div class="col-sm-6">
+            <!-- TODO: ARRUMAR -->
+            <!-- <div class="col-sm-6">
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
                             Número/código do voo de chegada
                         </h5>
                         <p class="card-text">
-                            Código
+                            {{voo.codigo_chegada}}
                         </p>
                     </div>
                 </div>
-            </div>
+            </div> -->
 
             <div class="col-sm-6">
                 <div class="card">
@@ -104,7 +106,7 @@
                             Rota
                         </h5>
                         <p class="card-text">
-                            Dados da rota
+                            {{voo.rota.id}}
                         </p>
                     </div>
                 </div>
@@ -117,7 +119,7 @@
                             Local de Partida
                         </h5>
                         <p class="card-text">
-                            Local
+                            {{voo.rota.aeroporto_partida}}
                         </p>
                     </div>
                 </div>
@@ -130,7 +132,7 @@
                             Local de Destino
                         </h5>
                         <p class="card-text">
-                            Local
+                            {{voo.rota.aeroporto_chegada}}
                         </p>
                     </div>
                 </div>
@@ -143,10 +145,10 @@
                             Previsão de sua saída/partida e chegada
                         </h5>
                         <p class="card-text">
-                            Partida: Data e hora
+                            Partida: {{voo.partida_prevista}}
                         </p>
                         <p class="card-text">
-                            Chegada: Data e hora
+                            Chegada: {{voo.chegada_prevista}}
                         </p>
                     </div>
                 </div>

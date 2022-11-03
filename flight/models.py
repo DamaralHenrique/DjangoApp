@@ -10,7 +10,8 @@ class Rota(models.Model):
     id = models.IntegerField(primary_key=True)
     aeroporto_partida = models.CharField(max_length=200, null=False)
     aeroporto_chegada = models.CharField(max_length=200, null=False)
-    
+    # codigo_chegada = models.IntegerField(null=False)
+    # codigo_partida = models.IntegerField(null=False)
     class Meta:
         db_table = 'rotas'
 
