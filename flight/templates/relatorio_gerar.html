@@ -14,6 +14,7 @@
 </head>
 
 <body>
+    {% include 'messages.html' %}
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -59,72 +60,11 @@
     </script>
 
     <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Tipos de relatório
-                        </h5>
-                        <p class="card-text">
-                            Escolha o tipo de relatório a ser gerado:
-                        </p>
-
-                        <select id="test"
-                                name="form_select"
-                                onchange="showDiv(this)">
-                            <option value="0">
-                                Movimentação de voos por período
-                            </option>
-                            <option value="1">
-                                Partidas e chegadas por empresas
-                            </option>
-                         </select>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Inicio e Fim do voo
-                        </h5>
-                        <p class="card-text">
-
-                            <form action="" method="post">
-                                {% csrf_token %}
-                                <table>
-                                    <tr>
-                                        <td>
-                                            <input id="id_inicio"
-                                                   name="data_inicio"
-                                                   type="text"
-                                                   value="2016-11-08"
-                                                   required />
-                                            <br/>
-                                            <span class="helptext"
-                                                  style="margin-right: 10px">
-                                                Data de inicio do voo (ex: 2016-11-08).
-                                            </span>
-                                        </td>
-                                        <td>
-                                            <input id="id_fim"
-                                                   name="data_fim"
-                                                   type="text"
-                                                   value="2016-11-09"
-                                                   required />
-                                            <br />
-                                            <span class="helptext">Data de fim do voo.</span>
-                                        </td>
-                                    </tr>
-                                </table>
-                                <input type="submit" value="Submit">
-                              </form>                   
-                        </p>
-                    </div>
-                </div>
-            </div>
+            <form action = "" method = "post">
+                {% csrf_token %}
+                {{form.as_p }}
+                <input type="submit" value="Submit">
+            </form>
         </div>
 
         <hr class="my-4">

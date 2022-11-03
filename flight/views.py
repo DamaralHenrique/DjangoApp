@@ -5,8 +5,11 @@ from django.http import HttpResponseRedirect
 from django.urls import reverse
 
 from django.shortcuts import render
+from .forms import ReportForm
+from django.contrib import messages
 
-from flight.forms import DataForm
+
+# from flight.forms import DataFormr
 
 # VIEWS INICIAIS 
 def loginViews(request):
@@ -19,29 +22,41 @@ def telaInicialViews(request):
 # RELATORIO
 def telaGerarRelatorioViews(request):
 
-    voo_instance = get_object_or_404(VooInstance, pk=pk)
-
-
+    # If this is a POST request then process the Form data
     if request.method == 'POST':
 
-        form = DataForm(request.POST)
+        # Create a form instance and populate it with data from the request (binding):
+        form = ReportForm(request.POST)
+        context = {
+            'form': form,
+        }
 
+        initial_date = request.POST['initial_date']
+        final_date = request.POST['final_date']
 
+        if initial_date > datetime.date.today():
+            print('Data inicial maior que a atual!')
+            
+
+        if final_date > datetime.date.today():
+            print('Data final maior que a atual!')
+            
+        if initial_date >= final_date:
+            print('Data inicial maior que a fina!')
+
+        # Check if the form is valid:
         if form.is_valid():
-            voo_instance.due_back = form.cleaned_data['renewal_date']
-            voo_instance.save()
-            return HttpResponseRedirect(reverse('all-borrowed'))
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('menu'))
+        else:
+            messages.warning(request, 'Erro nos campos!')
 
+    # If this is a GET (or any other method) create the default form
     else:
-        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = DataForm(initial={'renewal_date': proposed_renewal_date})
+        context ={}
+        context['form']= ReportForm()
 
-    context = {
-        'form': form,
-        'voo_instance': voo_instance,
-    }
-
-    return render(request, "relatorio_gerar.html")
+    return render(request, "relatorio_gerar.html", context)
 
 def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html")

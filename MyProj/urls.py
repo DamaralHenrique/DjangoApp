@@ -20,7 +20,7 @@ from flight import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.loginViews),
-    path('home/', views.telaInicialViews),
+    path('home/', views.telaInicialViews,  name='menu'),
     path('home/monitoramento_painel/', views.telaPainelMonitoramentoViews),
     path('home/monitoramento_painel/monitoramento_atualizacao/', views.telaAtualizarMonitoramentoViews),
     path('home/monitoramento_painel/monitoramento_voo/', views.telaMonitoramentoViews),
