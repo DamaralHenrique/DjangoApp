@@ -1,12 +1,12 @@
 import datetime
 
-from django.shortcuts import get_object_or_404
-from django.http import HttpResponseRedirect
+from django.shortcuts import get_object_or_404, render
+from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
+from django.template import loader
 
-from django.shortcuts import render
-
-from flight.forms import DataForm
+from .forms import *
+from .models import *
 
 # VIEWS INICIAIS 
 def loginViews(request):
@@ -18,29 +18,7 @@ def telaInicialViews(request):
 
 # RELATORIO
 def telaGerarRelatorioViews(request):
-
-    voo_instance = get_object_or_404(VooInstance, pk=pk)
-
-
-    if request.method == 'POST':
-
-        form = DataForm(request.POST)
-
-
-        if form.is_valid():
-            voo_instance.due_back = form.cleaned_data['renewal_date']
-            voo_instance.save()
-            return HttpResponseRedirect(reverse('all-borrowed'))
-
-    else:
-        proposed_renewal_date = datetime.date.today() + datetime.timedelta(weeks=3)
-        form = DataForm(initial={'renewal_date': proposed_renewal_date})
-
-    context = {
-        'form': form,
-        'voo_instance': voo_instance,
-    }
-
+    
     return render(request, "relatorio_gerar.html")
 
 def telaPreviewRelatorioViews(request):
@@ -60,13 +38,82 @@ def telaAtualizarMonitoramentoViews(request):
 
 # CRUD VOOS
 def telaListaVoosViews(request):
-    return render(request, "voo_lista.html")
+    createDummyData()
+
+    voos = Voo.objects.all().values()
+    template = loader.get_template('voo_lista.html')
+    context = {
+        'voos': voos,
+    }
+    return HttpResponse(template.render(context, request))
 
 def telaCreateVooViews(request):
-    return render(request, "voo_c.html")
+    
+    if request.method == 'POST':
+        form = UpdateVoo(request.POST)
+
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('lista_de_voos'))
+
+    # GET
+    else:
+        previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
+        form = UpdateVoo(initial={'id_num_partida': previsao_de_partida})
+    
+    context ={}
+    context['form_create_voo']= CreateVoo()
+    return render(request, "voo_c.html", context)
 
 def telaUpdateVooViews(request):
-    return render(request, "voo_u.html")
+    
+    if request.method == 'POST':
+        form = UpdateVoo(request.POST)
+
+        if form.is_valid():
+            return HttpResponseRedirect(reverse('read_or_delete'))
+
+    # GET
+    else:
+        previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
+        form = UpdateVoo(initial={'id_num_partida': previsao_de_partida})
+
+    context = {}
+    context['form_update_voo']= UpdateVoo()
+    return render(request, "voo_u.html", context)
     
 def telaReadDeleteVooViews(request):
+
+
     return render(request, "voo_rd.html")
+
+class ControleVoo():
+    def __init__(self) -> None:
+        pass
+
+def createDummyData():
+    StatusVoo.objects.create(titulo="embarcando")
+    StatusVoo.objects.create(titulo="cancelado")
+    StatusVoo.objects.create(titulo="programado")
+    StatusVoo.objects.create(titulo="taxiando")
+    StatusVoo.objects.create(titulo="pronto")
+    StatusVoo.objects.create(titulo="autorizado")
+    StatusVoo.objects.create(titulo="em voo")
+    StatusVoo.objects.create(titulo="aterrissando")
+
+    rota1 = Rota.objects.create(id=123, 
+                                aeroporto_partida="Aeroporto 1", 
+                                aeroporto_chegada="Aeroporto 2")
+    Voo.objects.create(id=1234,
+                       rota=rota1,
+                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+                       companhia_aerea="Companhia 1")
+
+    rota2 = Rota.objects.create(id=124, 
+                                aeroporto_partida="Aeroporto 12", 
+                                aeroporto_chegada="Aeroporto 23")
+    Voo.objects.create(id=1235,
+                       rota=rota2,
+                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+                       companhia_aerea="Companhia 2")

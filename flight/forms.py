@@ -5,24 +5,34 @@ import datetime
 
 from django import forms
 
+
+ROTAS= [
+    ('1', 'Rota 1'),
+    ('2', 'Rota 2'),
+    ('3', 'Rota 3'),
+    ('4', 'Rota 4'),
+    ]
 # template (https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Forms)
-class DataForm(forms.Form):
-    renewal_date = forms.DateField(
-            help_text="Enter a date between now and 4 weeks (default 3).")
 
-    def clean_renewal_date(self):
-        data = self.cleaned_data['data_inicio']
+class CreateVoo(forms.Form):
+    numero_do_voo_de_partida = forms.CharField(max_length = 200)
+    numero_do_voo_de_chegada = forms.CharField(max_length = 200)
+    companhia_aerea = forms.CharField(max_length = 200)
+    rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
+    local_de_partida = forms.CharField(max_length = 200)
+    local_de_destino = forms.CharField(max_length = 200)
+    previsao_de_partida = forms.CharField(max_length = 200)
+    previsao_de_chegada = forms.CharField(max_length = 200)
 
-
-        if data < datetime.date.today():
-            raise ValidationError(_('Invalid date - renewal in past'))
-
-        if data > datetime.date.today() + datetime.timedelta(weeks=4):
-            raise ValidationError(
-                _('Invalid date - renewal more than 4 weeks ahead'))
-
-        return data
-
+class UpdateVoo(forms.Form):
+    id_num_partida = forms.CharField(max_length = 200)
+    id_num_chegada = forms.CharField(max_length = 200)
+    companhia_aerea = forms.CharField(max_length = 200)
+    rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
+    local_de_partida = forms.CharField(max_length = 200)
+    local_de_destino = forms.CharField(max_length = 200)
+    previsao_de_partida = forms.CharField(max_length = 200)
+    previsao_de_chegada = forms.CharField(max_length = 200)
 
 class testForm(forms.Form):
     dummyText = forms.CharField(help_text="Enter text")

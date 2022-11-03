@@ -26,8 +26,32 @@ urlpatterns = [
     path('home/monitoramento_painel/monitoramento_voo/', views.telaMonitoramentoViews),
     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
     path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews),
-    path('home/lista_voos/', views.telaListaVoosViews),
-    path('home/lista_voos/update/', views.telaUpdateVooViews),
-    path('home/lista_voos/create/', views.telaCreateVooViews),
+    path('home/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos'),
     path('home/lista_voos/read_or_delete/', views.telaReadDeleteVooViews)
 ]
+
+urlpatterns += [
+    path('home/lista_voos/create/', views.telaCreateVooViews),
+    path('home/lista_voos/update/', views.telaUpdateVooViews),
+    path('home/lista_voos/read_or_delete/', views.telaReadDeleteVooViews, name = 'read_or_delete')
+]
+
+# urlpatterns = [
+#     path('admin/', admin.site.urls),
+#     path('', views.loginViews),
+#     path('home/', views.telaInicialViews),
+#     path('home/monitoramento_painel/', views.telaPainelMonitoramentoViews),
+#     path('home/monitoramento_painel/monitoramento_atualizacao/', views.telaAtualizarMonitoramentoViews),
+#     path('home/monitoramento_painel/monitoramento_voo/', views.telaMonitoramentoViews),
+#     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
+#     path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews),
+#     path('home/lista_voos/', views.telaListaVoosViews),
+#     path('home/lista_voos/read_or_delete/', views.telaReadDeleteVooViews)
+# ]
+
+# urlpatterns += [
+#     path('home/lista_voos/create/', views.telaCreateVooViews),
+#     path('home/lista_voos/update/', views.telaUpdateVooViews),
+#     path('home/lista_voos/read_or_delete/', views.telaReadDeleteVooViews)
+# ]
+
