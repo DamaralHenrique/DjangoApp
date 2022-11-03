@@ -45,46 +45,6 @@
 
     <div class="container">
         <div class="row">
-            <!-- <p>
-                Lembrete: utilizar Lista de cards para posteriormente mostrar os diversos voos de forma dinamica.
-            </p>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Voo nº(x)
-                        </h5>
-                        <div class="row">
-                            <a href="read_or_delete/" class="btn btn-primary" style="margin-right: 10px">
-                                VISUALIZAR
-                            </a>
-                            <a href="update/" class="btn btn-primary" style="margin-right: 10px">
-                                ATUALIZAR
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Voo nº(x+1)
-                        </h5>
-                        <p class="card-text">
-                            Alguns dados do voo, mas não todos
-                        </p>
-                        <div class="row">
-                            <a href="read_or_delete/" class="btn btn-primary" style="margin-right: 10px">
-                                VISUALIZAR
-                            </a>
-                            <a href="update/" class="btn btn-primary" style="margin-right: 10px">
-                                ATUALIZAR
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div> -->
             {% for voo in voos %}
                 <div class="col-sm-6">
                     <div class="card">
@@ -93,10 +53,10 @@
                                 Voo nº {{voo.id}}
                             </h5>
                             <div class="row">
-                                <a href="read_or_delete/" class="btn btn-primary" style="margin-right: 10px">
+                                <a href="read_or_delete/{{voo.id}}/" class="btn btn-primary" style="margin-right: 10px">
                                     VISUALIZAR
                                 </a>
-                                <a href="update/" class="btn btn-primary" style="margin-right: 10px">
+                                <a href="update/{{voo.id}}/" class="btn btn-primary" style="margin-right: 10px">
                                     ATUALIZAR
                                 </a>
                             </div>

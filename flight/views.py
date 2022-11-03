@@ -38,7 +38,7 @@ def telaAtualizarMonitoramentoViews(request):
 
 # CRUD VOOS
 def telaListaVoosViews(request):
-    createDummyData()
+    # createDummyData() # DESCOMENTAR PARA CRIAR OS DADOS
 
     voos = Voo.objects.all().values()
     template = loader.get_template('voo_lista.html')
@@ -46,6 +46,7 @@ def telaListaVoosViews(request):
         'voos': voos,
     }
     return HttpResponse(template.render(context, request))
+
 
 def telaCreateVooViews(request):
     
@@ -58,13 +59,14 @@ def telaCreateVooViews(request):
     # GET
     else:
         previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
-        form = UpdateVoo(initial={'id_num_partida': previsao_de_partida})
+        form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
     
     context ={}
     context['form_create_voo']= CreateVoo()
     return render(request, "voo_c.html", context)
 
-def telaUpdateVooViews(request):
+
+def telaUpdateVooViews(request, id):
     
     if request.method == 'POST':
         form = UpdateVoo(request.POST)
@@ -75,16 +77,24 @@ def telaUpdateVooViews(request):
     # GET
     else:
         previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
-        form = UpdateVoo(initial={'id_num_partida': previsao_de_partida})
+        form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
 
     context = {}
     context['form_update_voo']= UpdateVoo()
-    return render(request, "voo_u.html", context)
-    
-def telaReadDeleteVooViews(request):
+    context['id_voo'] = id
+    template = loader.get_template('voo_u.html')
+    return HttpResponse(template.render(context, request))
+
+    # return render(request, "voo_u.html", context)
 
 
-    return render(request, "voo_rd.html")
+def telaReadDeleteVooViews(request, id):
+    template = loader.get_template('voo_rd.html')
+    context = {
+        'voo': Voo.objects.get(id=id),
+    }
+    return HttpResponse(template.render(context, request))
+
 
 class ControleVoo():
     def __init__(self) -> None:
