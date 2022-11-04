@@ -1,6 +1,8 @@
 import datetime
 
 from django.shortcuts import get_object_or_404, render
+from .forms import ReportForm
+from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse
 from django.urls import reverse
 from django.template import loader
@@ -18,8 +20,42 @@ def telaInicialViews(request):
 
 # RELATORIO
 def telaGerarRelatorioViews(request):
-    
-    return render(request, "relatorio_gerar.html")
+
+    # If this is a POST request then process the Form data
+    if request.method == 'POST':
+
+        # Create a form instance and populate it with data from the request (binding):
+        form = ReportForm(request.POST)
+        context = {
+            'form': form,
+        }
+
+        initial_date = request.POST['initial_date']
+        final_date = request.POST['final_date']
+
+        if initial_date > datetime.date.today():
+            print('Data inicial maior que a atual!')
+            
+
+        if final_date > datetime.date.today():
+            print('Data final maior que a atual!')
+            
+        if initial_date >= final_date:
+            print('Data inicial maior que a fina!')
+
+        # Check if the form is valid:
+        if form.is_valid():
+            # redirect to a new URL:
+            return HttpResponseRedirect(reverse('menu'))
+        else:
+            messages.warning(request, 'Erro nos campos!')
+
+    # If this is a GET (or any other method) create the default form
+    else:
+        context ={}
+        context['form']= ReportForm()
+
+    return render(request, "relatorio_gerar.html", context)
 
 def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html")
