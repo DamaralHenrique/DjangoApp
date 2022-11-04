@@ -13,7 +13,7 @@ REPORT_TYPES= [
 class MyDateInput(forms.widgets.DateInput):
     input_type = 'date'
 
-# creating a form
+
 class ReportForm(forms.Form):
 
     report_type= forms.CharField(label='Escolha o tipo de relatório a ser gerado', widget=forms.Select(choices=REPORT_TYPES))

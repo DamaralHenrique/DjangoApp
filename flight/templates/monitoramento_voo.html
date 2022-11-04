@@ -32,13 +32,78 @@
             <p>
                 Cancelar operação:
             </p>
-            <a href="../" class="btn btn-primary">
+            <a href="../../" class="btn btn-primary">
                 VOLTAR
             </a>
         </div>
     </div>
 
-<!-- adicionar dados -->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Partida
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.partida_real}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Partida
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.chegada_real}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+
+            <!-- id = models.IntegerField(primary_key=True)
+            voo = models.ForeignKey(Voo, on_delete=models.CASCADE, null=False)
+            status = models.ForeignKey(StatusVoo, on_delete=models.CASCADE, null=False)
+            partida_real = models.DateTimeField()
+            chegada_real = models.DateTimeField() -->
+
+
+            <!-- TODO: ARRUMAR -->
+            <!-- <div class="col-sm-6">         
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Número/código do voo de partida
+                        </h5>
+                        <p class="card-text">
+                            {{voo.codigo_partida}}
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+
+            <!-- TODO: ARRUMAR -->
+            <!-- <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Número/código do voo de chegada
+                        </h5>
+                        <p class="card-text">
+                            {{voo.codigo_chegada}}
+                        </p>
+                    </div>
+                </div>
+            </div> -->
+
+        </div>
+    </div>
 
 </body>
 

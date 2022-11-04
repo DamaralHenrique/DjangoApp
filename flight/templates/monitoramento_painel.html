@@ -40,34 +40,29 @@
         </div>
     </div>
 
+
     <div class="container">
         <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <p>
-                        Lembrete: utilizar Lista de cards para posteriormente mostrar os diversos voos de forma dinamica.
-                    </p>
-                    <!-- talvez usar uma lista -->
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Voo nº(x)
-                        </h5>
-                        <p class="card-text">
-                            Alguns dados do voo, mas não todos
-                        </p>
-                        <div class="row">
-                            <a href="monitoramento_atualizacao/" class="btn btn-primary" style="margin-right: 10px">
-                                ATUALIZAR
-                            </a>
-                            <a href="monitoramento_voo/" class="btn btn-primary">
-                                MONITORAMENTO
-                            </a>
+            {% for voo in voos %}
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Voo nº {{vooDinamico.id}}
+                            </h5>
+                            <div class="row">
+                                <a href="monitoramento_voo/{{vooDinamico.id}}/" class="btn btn-primary" style="margin-right: 10px">
+                                    VISUALIZAR
+                                </a>
+                                <a href="monitoramento_atualizacao/{{vooDinamico.id}}/" class="btn btn-primary" style="margin-right: 10px">
+                                    ATUALIZAR
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
-            </div>
+            {% endfor %}
         </div>
-    </div>
 </body>
 
 <script src="js/myscript.js"></script>

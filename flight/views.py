@@ -36,7 +36,6 @@ def telaGerarRelatorioViews(request):
         if initial_date > datetime.date.today():
             print('Data inicial maior que a atual!')
             
-
         if final_date > datetime.date.today():
             print('Data final maior que a atual!')
             
@@ -129,6 +128,47 @@ def telaReadDeleteVooViews(request, id):
     context = {
         'voo': Voo.objects.get(id=id),
     }
+    return HttpResponse(template.render(context, request))
+
+
+# MONITORAMENTO DE VOOS DINAMICOS
+def telaMonitoramentoPainel(request):
+    # CRIAR UM createDummyData() PARA O BANCO DE DADOS
+
+    voosDinamicos = VooDinamico.objects.all().values()
+    template = loader.get_template('monitoramento_painel.html')
+    context = {
+        'voosDinamicos': voosDinamicos,
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def telaMonitoramentoVoo(request, id):
+    template = loader.get_template('monitoramento_voo.html')
+    context = {
+        'vooDinamico': VooDinamico.objects.get(id=id),
+    }
+    return HttpResponse(template.render(context, request))
+
+
+def monitoramento_atualizacao(request, id):
+    
+    if request.method == 'POST':
+        #form = UpdateVoo(request.POST)
+
+        if form.is_valid():
+            # TO DO: fazer o update
+            return HttpResponseRedirect(reverse('painel_monitoracao'))
+
+    # GET
+    else:
+        # previsao_de_partida = datetime.date.today() # 
+        # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
+
+    context = {}
+    # context['form_update_voo_Dinamico']= UpdateVooDinamico()
+    context['id_voo_dinamico'] = id
+    template = loader.get_template('monitoramento_painel.html')
     return HttpResponse(template.render(context, request))
 
 
