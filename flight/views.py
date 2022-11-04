@@ -151,7 +151,7 @@ def telaMonitoramentoVoo(request, id):
     return HttpResponse(template.render(context, request))
 
 
-def monitoramento_atualizacao(request, id):
+def telaMonitoramentoAtualizacao(request, id):
     
     if request.method == 'POST':
         #form = UpdateVoo(request.POST)
