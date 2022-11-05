@@ -55,7 +55,7 @@ python manage.py makemigrations
 
 2. To create the database, execute:
 ```
-python menage.py migrate
+python manage.py migrate
 ```
 
 3. The tests are defined in the `flight\test.py` file. To execute them, run:
