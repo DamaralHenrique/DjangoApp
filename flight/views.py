@@ -86,15 +86,17 @@ def telaListaVoosViews(request):
 def telaCreateVooViews(request):
     
     if request.method == 'POST':
-        form = UpdateVoo(request.POST)
+        form = CreateVoo(request.POST)
 
         if form.is_valid():
+            Voo.objects.create(
+                rota = Rota.objects.get(id=form.data['rota']),
+                chegada_prevista = datetime.datetime(2022, 6, 10, 16, 00), # dummy
+                partida_prevista = datetime.datetime(2022, 6, 10, 14, 00), # dummy
+                companhia_aerea = form.data['companhia_aerea'],
+            )
+            
             return HttpResponseRedirect(reverse('lista_de_voos'))
-
-    # GET
-    else:
-        previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
-        form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
     
     context ={}
     context['form_create_voo']= CreateVoo()
@@ -153,17 +155,17 @@ def telaMonitoramentoVoo(request, id):
 
 def telaMonitoramentoAtualizacao(request, id):
     
-    if request.method == 'POST':
-        #form = UpdateVoo(request.POST)
+    # if request.method == 'POST':
+    #     #form = UpdateVoo(request.POST)
 
-        if form.is_valid():
-            # TO DO: fazer o update
-            return HttpResponseRedirect(reverse('painel_monitoracao'))
+    #     if form.is_valid():
+    #         # TO DO: fazer o update
+    #         return HttpResponseRedirect(reverse('painel_monitoracao'))
 
-    # GET
-    else:
-        # previsao_de_partida = datetime.date.today() # 
-        # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
+    # # GET
+    # else:
+    #     # previsao_de_partida = datetime.date.today() # 
+    #     # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
 
     context = {}
     # context['form_update_voo_Dinamico']= UpdateVooDinamico()
@@ -177,29 +179,43 @@ class ControleVoo():
         pass
 
 def createDummyData():
-    StatusVoo.objects.create(titulo="embarcando")
-    StatusVoo.objects.create(titulo="cancelado")
-    StatusVoo.objects.create(titulo="programado")
-    StatusVoo.objects.create(titulo="taxiando")
-    StatusVoo.objects.create(titulo="pronto")
-    StatusVoo.objects.create(titulo="autorizado")
-    StatusVoo.objects.create(titulo="em voo")
-    StatusVoo.objects.create(titulo="aterrissando")
+    # StatusVoo.objects.create(titulo="embarcando")
+    # StatusVoo.objects.create(titulo="cancelado")
+    # StatusVoo.objects.create(titulo="programado")
+    # StatusVoo.objects.create(titulo="taxiando")
+    # StatusVoo.objects.create(titulo="pronto")
+    # StatusVoo.objects.create(titulo="autorizado")
+    # StatusVoo.objects.create(titulo="em voo")
+    # StatusVoo.objects.create(titulo="aterrissando")
 
-    rota1 = Rota.objects.create(id=123, 
-                                aeroporto_partida="Aeroporto 1", 
-                                aeroporto_chegada="Aeroporto 2")
-    Voo.objects.create(id=1234,
-                       rota=rota1,
-                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-                       companhia_aerea="Companhia 1")
+    # rota1 = Rota.objects.create(id=123, 
+    #                             aeroporto_partida="Aeroporto 1", 
+    #                             aeroporto_chegada="Aeroporto 2")
+    # Voo.objects.create(id=1234,
+    #                    rota=rota1,
+    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+    #                    companhia_aerea="Companhia 1")
 
-    rota2 = Rota.objects.create(id=124, 
-                                aeroporto_partida="Aeroporto 12", 
-                                aeroporto_chegada="Aeroporto 23")
-    Voo.objects.create(id=1235,
-                       rota=rota2,
-                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-                       companhia_aerea="Companhia 2")
+    # rota2 = Rota.objects.create(id=124, 
+    #                             aeroporto_partida="Aeroporto 12", 
+    #                             aeroporto_chegada="Aeroporto 23")
+    # Voo.objects.create(id=1235,
+    #                    rota=rota2,
+    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+    #                    companhia_aerea="Companhia 2")
+
+    # Rota.objects.create(id=1, 
+    #                     aeroporto_partida="Guarulhos", 
+    #                     aeroporto_chegada="Santos Dumont")
+    # Rota.objects.create(id=2, 
+    #                     aeroporto_partida="Guarulhos", 
+    #                     aeroporto_chegada="Salvador")
+    # Rota.objects.create(id=3, 
+    #                     aeroporto_partida="Congonhas", 
+    #                     aeroporto_chegada="Brasília")
+    # Rota.objects.create(id=4, 
+    #                     aeroporto_partida="Brasília", 
+    #                     aeroporto_chegada="Congonhas")
+    pass
