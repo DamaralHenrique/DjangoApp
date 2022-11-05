@@ -30,17 +30,18 @@ def telaGerarRelatorioViews(request):
             'form': form,
         }
 
-        initial_date = request.POST['initial_date']
-        final_date = request.POST['final_date']
+        date_format = "%Y-%m-%d"
+        initial_date = datetime.datetime.strptime(request.POST['initial_date'], date_format)
+        final_date = datetime.datetime.strptime(request.POST['final_date'], date_format)
 
-        if initial_date > datetime.date.today():
+        if initial_date.date() > datetime.date.today():
             print('Data inicial maior que a atual!')
             
 
-        if final_date > datetime.date.today():
+        if final_date.date() > datetime.date.today():
             print('Data final maior que a atual!')
-            
-        if initial_date >= final_date:
+
+        if initial_date.date() >= final_date.date():
             print('Data inicial maior que a fina!')
 
         # Check if the form is valid:
@@ -92,8 +93,8 @@ def telaCreateVooViews(request):
         if form.is_valid():
             Voo.objects.create(
                 rota = Rota.objects.get(id=form.data['rota']),
-                chegada_prevista = datetime.datetime(2022, 6, 10, 16, 00), # dummy
-                partida_prevista = datetime.datetime(2022, 6, 10, 14, 00), # dummy
+                chegada_prevista = form.data['previsao_de_chegada'],
+                partida_prevista = form.data['previsao_de_partida'],
                 companhia_aerea = form.data['companhia_aerea'],
             )
             
@@ -131,6 +132,11 @@ def telaReadDeleteVooViews(request, id):
     context = {
         'voo': Voo.objects.get(id=id),
     }
+
+    if request.method == 'POST':
+        Voo.objects.all().filter(id=id).delete()
+        return HttpResponseRedirect(reverse('lista_de_voos'))
+
     return HttpResponse(template.render(context, request))
 
 

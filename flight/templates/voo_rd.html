@@ -47,11 +47,14 @@
                     style="margin-right: 10px">
                     ATUALIZAR
                 </a>
-                <!-- alterar para função de deleção -->
-                <a href="../../"
-                    class="btn btn-primary">
-                    DELETAR
-                </a>
+                <!-- TODO: Formatar -->
+                <form class="btn btn-primary"
+                        style="margin-right: 10px" 
+                        action="" 
+                        method="post">
+                    {% csrf_token %}
+                    <input type="submit" value="DELETAR">
+                </form> 
             </div>
         </div>
     </div>

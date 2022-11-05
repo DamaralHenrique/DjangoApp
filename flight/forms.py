@@ -13,9 +13,7 @@ REPORT_TYPES= [
 class MyDateInput(forms.widgets.DateInput):
     input_type = 'date'
  
-# creating a form
-class ReportForm(forms.Form):
- 
+class ReportForm(forms.Form): 
     report_type= forms.CharField(label='Escolha o tipo de relatório a ser gerado', widget=forms.Select(choices=REPORT_TYPES))
     initial_date = forms.DateField(widget=MyDateInput())
     final_date = forms.DateField(widget=MyDateInput())
@@ -37,10 +35,7 @@ class ReportForm(forms.Form):
         if initial_date >= final_date:
             raise ValidationError(_('Data inicial maior que a fina!'))
 
-        # Remember to always return the cleaned data.
         return 0
-
-
 
 REPORT_TYPES= [
     ('1', 'Movimentação de voos por período'),
@@ -84,24 +79,19 @@ ROTAS= [
     ('3', 'Rota 3'),
     ('4', 'Rota 4'),
     ]
-# template (https://developer.mozilla.org/en-US/docs/Learn/Server-side/Django/Forms)
 
 class CreateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
     rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
     # local_de_partida = forms.CharField(max_length = 200)
     # local_de_destino = forms.CharField(max_length = 200)
-    previsao_de_partida = forms.CharField(max_length = 200)
-    previsao_de_chegada = forms.CharField(max_length = 200)
+    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
 
 class UpdateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
     rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
     # local_de_partida = forms.CharField(max_length = 200)
     # local_de_destino = forms.CharField(max_length = 200)
-    previsao_de_partida = forms.CharField(max_length = 200)
-    previsao_de_chegada = forms.CharField(max_length = 200)
-
-class testForm(forms.Form):
-    dummyText = forms.CharField(help_text="Enter text")
-
+    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
