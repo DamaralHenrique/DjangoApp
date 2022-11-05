@@ -167,7 +167,6 @@ class VooDinamicoTest(TestCase):
         tamFinal = len(VooDinamico.objects.all())
         self.assertEqual(tamFinal, tamOrig - 1)
 
-
 class ReportFormTest(TestCase):
 
     def test_initial_date_after_final_date(self):

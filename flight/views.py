@@ -36,6 +36,7 @@ def telaGerarRelatorioViews(request):
         if initial_date > datetime.date.today():
             print('Data inicial maior que a atual!')
             
+
         if final_date > datetime.date.today():
             print('Data final maior que a atual!')
             
