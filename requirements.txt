@@ -1,1 +1,4 @@
 django
+pytz
+reportlab
+fpdf2

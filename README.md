@@ -33,13 +33,9 @@ To get this project up and running locally on your computer:
    .\env\bin\Activate.ps1 # or .\env\scripts\Activate.ps1
    ```
 
-2. Then, install the following dependences:
+2. Then, install the project dependencies running the following command:
    ```
-   pip install django
-   
-   pip install reportlab
-
-   pip install fpdf2
+    pip install -r requirements.txt  
    ```
 
 3. Assuming you have Python setup, run the following commands:
