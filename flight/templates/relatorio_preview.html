@@ -32,17 +32,17 @@
             </p>
             <hr class="my-4">
             <p>
-                Confirmar operação:
+                Confirmar operação (ADICIONAR FUNCIONALIDADE DE BAIXAR RELATÓRIO):
             </p>
             <div class="row">
-                <a href="../"
+                <a href="../../"
                     class="btn btn-primary"
                     style="margin-right: 10px">
                     VOLTAR
                 </a>
                 <a href="../../"
                     class="btn btn-primary">
-                    SALVAR
+                    BAIXAR RELATÓRIO
                 </a>
             </div>
         </div>
@@ -54,10 +54,62 @@
                 <div class="card">
                     <div class="card-body">
                         <h5 class="card-title">
-                            Preview do relatório
+                            Id
                         </h5>
                         <p class="card-text">
-                            PDF do relatório, ou dados em texto.
+                            {{vooDinamico.id}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Rota
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.voo.rota.id}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Partida
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.partida_real}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Chegada
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.chegada_real}}
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Status
+                        </h5>
+                        <p class="card-text">
+                            {{vooDinamico.status.titulo}}
                         </p>
                     </div>
                 </div>
