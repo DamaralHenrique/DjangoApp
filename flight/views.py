@@ -86,13 +86,20 @@ def telaCreateVooViews(request):
         form = CreateVoo(request.POST)
 
         if form.is_valid():
-            Voo.objects.create(
+            voo_obj = Voo.objects.create(
                 rota = Rota.objects.get(id=form.data['rota']),
                 chegada_prevista = form.data['previsao_de_chegada'],
                 partida_prevista = form.data['previsao_de_partida'],
                 companhia_aerea = form.data['companhia_aerea'],
             )
-            
+
+            VooDinamico.objects.create(
+                voo=voo_obj,
+                status=StatusVoo.objects.get(titulo="-"),
+                partida_real=None,
+                chegada_real=None
+            )
+
             return HttpResponseRedirect(reverse('lista_de_voos'))
     
     context ={}
