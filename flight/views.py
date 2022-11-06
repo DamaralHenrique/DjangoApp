@@ -169,13 +169,6 @@ def telaMonitoramentoPainelViews(request):
     }
     return HttpResponse(template.render(context, request))
 
-def telaMonitoramentoVooViews(request, id):
-    template = loader.get_template('monitoramento_voo.html')
-    context = {
-        'vooDinamico': VooDinamico.objects.get(voo_id=id),
-    }
-    return HttpResponse(template.render(context, request))
-
 def telaMonitoramentoAtualizacaoViews(request, id):
     if request.method == 'POST':
         form = UpdateVooDinamicoStatus(request.POST)

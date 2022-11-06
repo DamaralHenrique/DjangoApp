@@ -35,7 +35,6 @@ urlpatterns += [
 
 urlpatterns += [
     path('home/monitoramento_painel/monitoramento_atualizacao/<int:id>/', views.telaMonitoramentoAtualizacaoViews, name = 'atualizar_voo_monitorado'),
-    path('home/monitoramento_painel/monitoramento_voo/<int:id>/', views.telaMonitoramentoVooViews, name = 'ver_voo_monitorado')
 ]
 
 urlpatterns += [
