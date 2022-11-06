@@ -30,7 +30,7 @@ urlpatterns = [
 urlpatterns += [
     path('home/lista_voos/create/', views.telaCreateVooViews),
     path('home/lista_voos/update/<int:id>/', views.telaUpdateVooViews),
-    path('home/lista_voos/read_or_delete/<int:id>/', views.telaReadDeleteVooViews)
+    path('home/lista_voos/read_or_delete/<int:id>/', views.telaReadDeleteVooViews, name = 'read_or_delete')
 ]
 
 urlpatterns += [

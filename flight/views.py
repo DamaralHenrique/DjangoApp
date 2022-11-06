@@ -111,7 +111,11 @@ def telaUpdateVooViews(request, id):
         form = UpdateVoo(request.POST)
 
         if form.is_valid():
-            return HttpResponseRedirect(reverse('read_or_delete'))
+            Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id=form.data['rota']),
+                                                   partida_prevista=form.data['previsao_de_partida'],
+                                                   chegada_prevista=form.data['previsao_de_chegada'], 
+                                                   companhia_aerea=form.data['companhia_aerea'])
+            return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
     # GET
     else:

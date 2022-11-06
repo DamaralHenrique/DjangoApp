@@ -33,19 +33,11 @@
                 Edite os campos disponíveis das informações do voo.
             </p>
             <hr class="my-4">
-            <p>
-                Confirme as edições:
-            </p>
             <div class="row">
                 <a href="../../read_or_delete/{{id_voo}}/"
                     class="btn btn-primary"
                     style="margin-right: 10px">
                     CANCELAR
-                </a>
-                <!-- alterar para função de deleção -->
-                <a href="../../read_or_delete/{{id_voo}}/"
-                    class="btn btn-primary">
-                    CONFIRMAR
                 </a>
             </div>
         </div>
@@ -57,7 +49,7 @@
             
             <form action="" method="post">
                 {% csrf_token %}
-                {{form_update_voo.as_table }}
+                {{form_update_voo.as_p }}
                 <input type="submit" value="Submit">
               </form>        
 
