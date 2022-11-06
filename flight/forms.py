@@ -91,11 +91,16 @@ class UpdateVoo(forms.Form):
 
 # FORMS: MONITORAMENTO
 FLIGHT_STATUS = [
-    ('1', 'Espera'),
-    ('2', 'Embarque'),
-    ('3', 'Pronto'),
-    ('4', 'Em movimento'),
-    ('5', 'Aterrissado'),
-    ('6', 'Cancelado'),
+    ('1', 'Embarcando'),
+    ('2', 'Cancelado'),
+    ('3', 'Programado'),
+    ('4', 'Taxiando'),
+    ('5', 'Pronto'),
+    ('6', 'Autorizado'),
+    ('7', 'Em voo'),
+    ('8', 'Aterrissando')
 ]
+
+class UpdateVooDinamicoStatus(forms.Form):
+    status = forms.CharField(label='Status atualizado:', widget=forms.Select(choices=FLIGHT_STATUS))
 

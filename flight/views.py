@@ -1,12 +1,13 @@
 import datetime
 
+import pytz
 from django.shortcuts import render
-from .forms import ReportForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.urls import reverse
 from django.template import loader
 from fpdf import FPDF
+
 from .forms import *
 from .models import *
 
@@ -155,11 +156,16 @@ def telaReadDeleteVooViews(request, id):
 
 # MONITORAMENTO DE VOOS DINAMICOS
 def telaMonitoramentoPainelViews(request):
-    voosDinamicos = VooDinamico.objects.all().values()
-    print(voosDinamicos)
+    voosDinamicos = VooDinamico.objects.all()
     template = loader.get_template('monitoramento_painel.html')
+    date = datetime.date.today()
+    tz = pytz.timezone('America/Sao_Paulo')
+    now = datetime.datetime.now(tz)
+    time = now.strftime("%H:%M:%S")
     context = {
         'voosDinamicos': voosDinamicos,
+        'time': time,
+        'date': date,
     }
     return HttpResponse(template.render(context, request))
 
@@ -171,27 +177,65 @@ def telaMonitoramentoVooViews(request, id):
     return HttpResponse(template.render(context, request))
 
 def telaMonitoramentoAtualizacaoViews(request, id):
-    
-    # if request.method == 'POST':
-    #     #form = UpdateVoo(request.POST)
+    if request.method == 'POST':
+        form = UpdateVooDinamicoStatus(request.POST)
 
-    #     if form.is_valid():
-    #         # TO DO: fazer o update
-    #         return HttpResponseRedirect(reverse('painel_monitoracao'))
+        if form.is_valid():
+            current_status_id = VooDinamico.objects.all().filter(voo=id).values_list('status')[0][0]
+            new_status_id = int(form.data['status'])
 
-    # # GET
-    # else:
-    #     # previsao_de_partida = datetime.date.today() # 
-    #     # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
+            if not is_new_status_valid(current_status_id, new_status_id):
+                print(is_new_status_valid(current_status_id, new_status_id))
+                messages.info(request, 'Novo status inválido!')
+            
+            else:
+                tz = pytz.timezone('America/Sao_Paulo')
+                VooDinamico.objects.all().filter(voo=id).update(status=StatusVoo.objects.get(id=form.data['status']))
+                if new_status_id == 7:
+                    VooDinamico.objects.all().filter(voo=id).update(partida_real=datetime.datetime.now(tz))
+                elif new_status_id == 8:
+                    VooDinamico.objects.all().filter(voo=id).update(chegada_real=datetime.datetime.now(tz))
+            
+                return HttpResponseRedirect(reverse('painel_monitoracao'))
 
     context = {
         'vooDinamico': VooDinamico.objects.get(voo_id=id),
     }
     # context['form_update_voo_Dinamico']= UpdateVooDinamico()
     context['id_voo_dinamico'] = id
+    context['form_update_voo_status']= UpdateVooDinamicoStatus()
     template = loader.get_template('monitoramento_atualizacao.html')
     return HttpResponse(template.render(context, request))
 
+
+def is_new_status_valid(current_status, new_status):
+    # Legenda:
+    # ('1', 'Embarcando'),
+    # ('2', 'Cancelado'),
+    # ('3', 'Programado'),
+    # ('4', 'Taxiando'),
+    # ('5', 'Pronto'),
+    # ('6', 'Autorizado'),
+    # ('7', 'Em voo'),
+    # ('8', 'Aterrissando'),
+    # ('9', '-'),
+
+    # Embarcando -> Programado
+    if current_status == 1 and new_status != 3:
+        return False
+    
+    # - -> Cancelado ou Embarcando
+    if current_status == 9 and new_status not in (1, 2):
+        return False
+    
+    # Programado -> Taxiando -> Pronto -> Autorizado -> Em voo -> Aterrisando
+    if 3 <= current_status <= 8  and new_status != current_status + 1:
+        return False
+
+    if current_status == 2:
+        return False
+
+    return True
 
 class ControleVoo():
     def __init__(self) -> None:

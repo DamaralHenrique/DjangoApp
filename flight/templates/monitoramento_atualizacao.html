@@ -26,13 +26,7 @@
             <h1 class="display-4">
                 ATUALIZAR ESTADO DO VOO
             </h1>
-            <p class="lead">
-                Dados editaveis do voo selecionado
-            </p>
             <hr class="my-4">
-            <p>
-                Cancelar operação:
-            </p>
             <div class="row">
                 <a href="../../" class="btn btn-primary" style="margin-right: 10px">
                     VOLTAR
@@ -45,6 +39,32 @@
         </div>
     </div>
 
+    <div class="container">
+        <div class="col-sm-6">
+            <div class="card">
+            <div class="card-body">
+                <h5 class="card-title">
+                    Status atual do voo: {{vooDinamico.status.titulo}}
+                </h5>
+                <h5 class="card-title">
+                    <form action="" method="post">
+                        {% csrf_token %}
+                        {{form_update_voo_status.as_p }}
+                        <input type="submit" value="Submit">
+                      </form>    
+                </h5>
+            </div>
+        </div>
+    </div>
+
+
+    {% if messages %}
+        <div class="alert alert-danger m-2" role="alert">
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+    {% endif %}
 
 </body>
 

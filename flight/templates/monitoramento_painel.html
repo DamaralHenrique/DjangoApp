@@ -30,39 +30,76 @@
             <p class="lead">
                 Selecione o voo para sua consulta ou atualização.
             </p>
-            <hr class="my-4">
-            <p>
-                Cancelar operação:
+            <p class="lead">
+                Data: {{date}}
             </p>
+            <p class="lead">
+                Hora: {{time}}
+            </p>
+            <hr class="my-4">
             <a href="../" class="btn btn-primary">
                 VOLTAR
             </a>
         </div>
     </div>
 
-
     <div class="container">
-        <div class="row">
+        <h3 class="display-6">
+            PARTIDAS
+        </h3>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Status</th>
+                <th>Destino</th>
+                <th>Partida Prevista</th>
+                <th>Partida Real</th>
+                <th></th>
+            </tr>
             {% for vooDinamico in voosDinamicos %}
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Voo nº {{vooDinamico.voo_id}}
-                            </h5>
-                            <div class="row">
-                                <a href="monitoramento_voo/{{vooDinamico.voo_id}}/" class="btn btn-primary" style="margin-right: 10px">
-                                    VISUALIZAR
-                                </a>
-                                <a href="monitoramento_atualizacao/{{vooDinamico.voo_id}}/" class="btn btn-primary" style="margin-right: 10px">
-                                    ATUALIZAR
-                                </a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <tr>
+                    <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                    <td>{{vooDinamico.voo.id}}</td>
+                    <td>{{vooDinamico.status.titulo}}</td>
+                    <td>{{vooDinamico.voo.rota.aeroporto_chegada}}</td>
+                    <td>{{vooDinamico.voo.partida_prevista}}</td>
+                    <td>{{vooDinamico.partida_real}}</td>
+                    <td>
+                        <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
+                            Atualizar
+                        </a>
+                    </td>
+                </tr>
             {% endfor %}
-        </div>
+        </table>
+
+        <hr class="my-4">
+
+        <h3 class="display-6">
+            CHEGADAS
+        </h3>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Origem</th>
+                <th>Chegada Prevista</th>
+                <th>Chegada Real</th>
+            </tr>
+            {% for vooDinamico in voosDinamicos %}
+                <tr>
+                    <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                    <td>{{vooDinamico.voo.id}}</td>
+                    <td>{{vooDinamico.voo.rota.aeroporto_partida}}</td>
+                    <td>{{vooDinamico.voo.chegada_prevista}}</td>
+                    <td>{{vooDinamico.chegada_real}}</td>
+                </tr>
+            {% endfor %}
+        </table>
+    </div>
 </body>
 
 <script src="js/myscript.js"></script>
