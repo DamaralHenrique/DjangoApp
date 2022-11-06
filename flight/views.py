@@ -130,6 +130,17 @@ def telaUpdateVooViews(request, id):
                                                    companhia_aerea=form.data['companhia_aerea'])
             return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
+    else:
+        previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
+        form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
+
+    context = {}
+    context['form_update_voo']= UpdateVoo()
+    context['id_voo'] = id
+    template = loader.get_template('voo_u.html')
+    return HttpResponse(template.render(context, request))
+    
+
 def telaReadDeleteVooViews(request, id):
     template = loader.get_template('voo_rd.html')
     context = {
