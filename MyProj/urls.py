@@ -21,7 +21,7 @@ urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.loginViews),
     path('home/', views.telaInicialViews, name = 'menu'),
-    path('home/monitoramento_painel/', views.telaPainelMonitoramentoViews, name = 'painel_monitoracao'),
+    path('home/monitoramento_painel/', views.telaMonitoramentoPainelViews, name = 'painel_monitoracao'),
     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
     path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews),
     path('home/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos')
@@ -34,6 +34,6 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('home/monitoramento_painel/monitoramento_atualizacao/<int:id>/', views.telaAtualizarMonitoramentoViews, name = 'atualizar_voo_monitorado'),
-    path('home/monitoramento_painel/monitoramento_voo/<int:id>/', views.telaMonitoramentoViews, name = 'ver_voo_monitorado')
+    path('home/monitoramento_painel/monitoramento_atualizacao/<int:id>/', views.telaMonitoramentoAtualizacaoViews, name = 'atualizar_voo_monitorado'),
+    path('home/monitoramento_painel/monitoramento_voo/<int:id>/', views.telaMonitoramentoVooViews, name = 'ver_voo_monitorado')
 ]

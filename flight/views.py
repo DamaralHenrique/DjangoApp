@@ -60,16 +60,6 @@ def telaGerarRelatorioViews(request):
 def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html")
 
-# MONITORAMENTO
-def telaPainelMonitoramentoViews(request):
-    return render(request, "monitoramento_painel.html")
-
-def telaMonitoramentoViews(request):
-    return render(request, "monitoramento_voo.html")
-
-def telaAtualizarMonitoramentoViews(request):
-    return render(request, "monitoramento_atualizacao.html")
-
 # CRUD VOOS
 def telaListaVoosViews(request):
     # createDummyData() # DESCOMENTAR PARA CRIAR OS DADOS
@@ -130,23 +120,23 @@ def telaReadDeleteVooViews(request, id):
     return HttpResponse(template.render(context, request))
 
 # MONITORAMENTO DE VOOS DINAMICOS
-def telaMonitoramentoPainel(request):
-    # CRIAR UM createDummyData() PARA O BANCO DE DADOS
+def telaMonitoramentoPainelViews(request):
     voosDinamicos = VooDinamico.objects.all().values()
+    print(voosDinamicos)
     template = loader.get_template('monitoramento_painel.html')
     context = {
         'voosDinamicos': voosDinamicos,
     }
     return HttpResponse(template.render(context, request))
 
-def telaMonitoramentoVoo(request, id):
+def telaMonitoramentoVooViews(request, id):
     template = loader.get_template('monitoramento_voo.html')
     context = {
-        'vooDinamico': VooDinamico.objects.get(id=id),
+        'vooDinamico': VooDinamico.objects.get(voo_id=id),
     }
     return HttpResponse(template.render(context, request))
 
-def telaMonitoramentoAtualizacao(request, id):
+def telaMonitoramentoAtualizacaoViews(request, id):
     
     # if request.method == 'POST':
     #     #form = UpdateVoo(request.POST)
@@ -160,10 +150,12 @@ def telaMonitoramentoAtualizacao(request, id):
     #     # previsao_de_partida = datetime.date.today() # 
     #     # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
 
-    context = {}
+    context = {
+        'vooDinamico': VooDinamico.objects.get(voo_id=id),
+    }
     # context['form_update_voo_Dinamico']= UpdateVooDinamico()
     context['id_voo_dinamico'] = id
-    template = loader.get_template('monitoramento_painel.html')
+    template = loader.get_template('monitoramento_atualizacao.html')
     return HttpResponse(template.render(context, request))
 
 
