@@ -36,6 +36,10 @@ To get this project up and running locally on your computer:
 2. Then, install the following dependences:
    ```
    pip install django
+   
+   pip install reportlab
+
+   pip install fpdf2
    ```
 
 3. Assuming you have Python setup, run the following commands:

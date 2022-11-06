@@ -37,3 +37,7 @@ urlpatterns += [
     path('home/monitoramento_painel/monitoramento_atualizacao/<int:id>/', views.telaAtualizarMonitoramentoViews, name = 'atualizar_voo_monitorado'),
     path('home/monitoramento_painel/monitoramento_voo/<int:id>/', views.telaMonitoramentoViews, name = 'ver_voo_monitorado')
 ]
+
+urlpatterns += [
+    path('home/gerar_relatorio/preview_relatorio/report/', views.report)
+]
