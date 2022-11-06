@@ -43,18 +43,18 @@
 
     <div class="container">
         <div class="row">
-            {% for voo in voos %}
+            {% for vooDinamico in voosDinamicos %}
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">
-                                Voo nº {{vooDinamico.id}}
+                                Voo nº {{vooDinamico.voo_id}}
                             </h5>
                             <div class="row">
-                                <a href="monitoramento_voo/{{vooDinamico.id}}/" class="btn btn-primary" style="margin-right: 10px">
+                                <a href="monitoramento_voo/{{vooDinamico.voo_id}}/" class="btn btn-primary" style="margin-right: 10px">
                                     VISUALIZAR
                                 </a>
-                                <a href="monitoramento_atualizacao/{{vooDinamico.id}}/" class="btn btn-primary" style="margin-right: 10px">
+                                <a href="monitoramento_atualizacao/{{vooDinamico.voo_id}}/" class="btn btn-primary" style="margin-right: 10px">
                                     ATUALIZAR
                                 </a>
                             </div>

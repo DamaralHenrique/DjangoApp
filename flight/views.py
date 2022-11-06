@@ -1,6 +1,7 @@
 import datetime
 
-from django.shortcuts import get_object_or_404, render
+from django.shortcuts import render
+from .forms import ReportForm
 from django.contrib import messages
 from django.http import HttpResponseRedirect, HttpResponse, FileResponse
 from django.urls import reverse
@@ -19,7 +20,6 @@ def telaInicialViews(request):
 
 # RELATORIO
 def telaGerarRelatorioViews(request):
-
     # If this is a POST request then process the Form data
     if request.method == 'POST':
 
@@ -83,18 +83,6 @@ def report(request):
     
     return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
-
-# MONITORAMENTO
-def telaPainelMonitoramentoViews(request):
-    return render(request, "monitoramento_painel.html")
-
-def telaMonitoramentoViews(request):
-    return render(request, "monitoramento_voo.html")
-
-def telaAtualizarMonitoramentoViews(request):
-    return render(request, "monitoramento_atualizacao.html")
-
-
 # CRUD VOOS
 def telaListaVoosViews(request):
     # createDummyData() # DESCOMENTAR PARA CRIAR OS DADOS
@@ -106,48 +94,41 @@ def telaListaVoosViews(request):
     }
     return HttpResponse(template.render(context, request))
 
-
 def telaCreateVooViews(request):
-    
     if request.method == 'POST':
         form = CreateVoo(request.POST)
 
         if form.is_valid():
-            Voo.objects.create(
+            voo_obj = Voo.objects.create(
                 rota = Rota.objects.get(id=form.data['rota']),
                 chegada_prevista = form.data['previsao_de_chegada'],
                 partida_prevista = form.data['previsao_de_partida'],
                 companhia_aerea = form.data['companhia_aerea'],
             )
-            
+
+            VooDinamico.objects.create(
+                voo=voo_obj,
+                status=StatusVoo.objects.get(titulo="-"),
+                partida_real=None,
+                chegada_real=None
+            )
+
             return HttpResponseRedirect(reverse('lista_de_voos'))
     
     context ={}
     context['form_create_voo']= CreateVoo()
     return render(request, "voo_c.html", context)
 
-
 def telaUpdateVooViews(request, id):
-    
     if request.method == 'POST':
         form = UpdateVoo(request.POST)
 
         if form.is_valid():
-            return HttpResponseRedirect(reverse('read_or_delete'))
-
-    # GET
-    else:
-        previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
-        form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
-
-    context = {}
-    context['form_update_voo']= UpdateVoo()
-    context['id_voo'] = id
-    template = loader.get_template('voo_u.html')
-    return HttpResponse(template.render(context, request))
-
-    # return render(request, "voo_u.html", context)
-
+            Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id=form.data['rota']),
+                                                   partida_prevista=form.data['previsao_de_partida'],
+                                                   chegada_prevista=form.data['previsao_de_chegada'], 
+                                                   companhia_aerea=form.data['companhia_aerea'])
+            return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
 def telaReadDeleteVooViews(request, id):
     template = loader.get_template('voo_rd.html')
@@ -161,28 +142,24 @@ def telaReadDeleteVooViews(request, id):
 
     return HttpResponse(template.render(context, request))
 
-
 # MONITORAMENTO DE VOOS DINAMICOS
-def telaMonitoramentoPainel(request):
-    # CRIAR UM createDummyData() PARA O BANCO DE DADOS
-
+def telaMonitoramentoPainelViews(request):
     voosDinamicos = VooDinamico.objects.all().values()
+    print(voosDinamicos)
     template = loader.get_template('monitoramento_painel.html')
     context = {
         'voosDinamicos': voosDinamicos,
     }
     return HttpResponse(template.render(context, request))
 
-
-def telaMonitoramentoVoo(request, id):
+def telaMonitoramentoVooViews(request, id):
     template = loader.get_template('monitoramento_voo.html')
     context = {
-        'vooDinamico': VooDinamico.objects.get(id=id),
+        'vooDinamico': VooDinamico.objects.get(voo_id=id),
     }
     return HttpResponse(template.render(context, request))
 
-
-def telaMonitoramentoAtualizacao(request, id):
+def telaMonitoramentoAtualizacaoViews(request, id):
     
     # if request.method == 'POST':
     #     #form = UpdateVoo(request.POST)
@@ -196,10 +173,12 @@ def telaMonitoramentoAtualizacao(request, id):
     #     # previsao_de_partida = datetime.date.today() # 
     #     # form = UpdateVoo(initial={'partida_prevista': previsao_de_partida}) # alterar para 
 
-    context = {}
+    context = {
+        'vooDinamico': VooDinamico.objects.get(voo_id=id),
+    }
     # context['form_update_voo_Dinamico']= UpdateVooDinamico()
     context['id_voo_dinamico'] = id
-    template = loader.get_template('monitoramento_painel.html')
+    template = loader.get_template('monitoramento_atualizacao.html')
     return HttpResponse(template.render(context, request))
 
 
