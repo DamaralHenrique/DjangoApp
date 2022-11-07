@@ -44,6 +44,14 @@
     <div class="container"
          style="margin-bottom: 10px">
         <div class="row">
+
+            <div style="margin-right: 10px">
+                <h5>VALORES ATUAIS:</h5>
+                <p>Companhia aérea: {{voo.companhia_aerea}}</p>
+                <p>Rota: {{voo.rota.id}}</p>
+                <p>Partida prevista: {{voo.partida_prevista}}</p>
+                <p>Chegada prevista: {{voo.chegada_prevista}}</p>
+            </div>
             
             <form action="" method="post">
                 {% csrf_token %}

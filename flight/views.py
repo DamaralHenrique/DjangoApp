@@ -318,7 +318,9 @@ def telaUpdateVooViews(request, id):
         previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
         form = UpdateVoo(initial={'partida_prevista': previsao_de_partida})
 
-    context = {}
+    context = {
+        'voo': Voo.objects.get(id=id),
+    }
     context['form_update_voo']= UpdateVoo()
     context['id_voo'] = id
     template = loader.get_template('voo_u.html')
