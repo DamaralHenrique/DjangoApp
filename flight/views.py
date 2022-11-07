@@ -26,11 +26,16 @@ LOGINS = [
     User("gerente","Juliano","qwer",3)
 ]
 
+def createBasicDBViews(request):
+    createBasicData()
+    return render(request, "create_db_data.html")
+
 # VIEWS INICIAIS 
 def loginViews(request):
     global login_limit
     global LOGINS
     context ={}
+
     if request.method == 'POST':
         if(login_limit == 2):
             context['WarningMessage']= "Você atingiu o limite de 3 tentativas"
@@ -78,8 +83,8 @@ def telaGerarRelatorioViews(request):
                 if initial_date.date() > datetime.date.today():
                     messages.warning(request, 'Data inicial maior que a atual!')
                 
-                # elif final_date.date() > datetime.date.today():
-                #     messages.warning(request, 'Data final maior que a atual!')
+                elif final_date.date() > datetime.date.today():
+                    messages.warning(request, 'Data final maior que a atual!')
 
                 elif initial_date.date() >= final_date.date():
                     messages.warning(request, 'Data inicial maior que a final!')
@@ -376,48 +381,150 @@ def is_new_status_valid(current_status, new_status):
 
     return True
 
-class ControleVoo():
-    def __init__(self) -> None:
-        pass
+def createBasicData():
+    # Create StatusVoo options
+    status1 = StatusVoo.objects.create(titulo="Embarcando")
+    status2 = StatusVoo.objects.create(titulo="Cancelado")
+    status3 = StatusVoo.objects.create(titulo="Programado")
+    status4 = StatusVoo.objects.create(titulo="Taxiando")
+    status5 = StatusVoo.objects.create(titulo="Pronto")
+    status6 = StatusVoo.objects.create(titulo="Autorizado")
+    status7 = StatusVoo.objects.create(titulo="Em voo")
+    status8 = StatusVoo.objects.create(titulo="Aterrissando")
+    status9 = StatusVoo.objects.create(titulo="-")
 
-def createDummyData():
-    # StatusVoo.objects.create(titulo="embarcando")
-    # StatusVoo.objects.create(titulo="cancelado")
-    # StatusVoo.objects.create(titulo="programado")
-    # StatusVoo.objects.create(titulo="taxiando")
-    # StatusVoo.objects.create(titulo="pronto")
-    # StatusVoo.objects.create(titulo="autorizado")
-    # StatusVoo.objects.create(titulo="em voo")
-    # StatusVoo.objects.create(titulo="aterrissando")
+    # Create Rotas options
+    rota1 = Rota.objects.create(id=1, 
+                                aeroporto_partida="Guarulhos", 
+                                aeroporto_chegada="Santos Dumont")
+    
+    rota2 = Rota.objects.create(id=2, 
+                                aeroporto_partida="Santos Dumont", 
+                                aeroporto_chegada="Guarulhos")
+    
+    rota3 = Rota.objects.create(id=3, 
+                                aeroporto_partida="Guarulhos", 
+                                aeroporto_chegada="Brasília")
 
-    # rota1 = Rota.objects.create(id=123, 
-    #                             aeroporto_partida="Aeroporto 1", 
-    #                             aeroporto_chegada="Aeroporto 2")
-    # Voo.objects.create(id=1234,
-    #                    rota=rota1,
-    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-    #                    companhia_aerea="Companhia 1")
+    rota4 = Rota.objects.create(id=4, 
+                                aeroporto_partida="Brasília", 
+                                aeroporto_chegada="Guarulhos")
 
-    # rota2 = Rota.objects.create(id=124, 
-    #                             aeroporto_partida="Aeroporto 12", 
-    #                             aeroporto_chegada="Aeroporto 23")
-    # Voo.objects.create(id=1235,
-    #                    rota=rota2,
-    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-    #                    companhia_aerea="Companhia 2")
+    rota5 = Rota.objects.create(id=5, 
+                                aeroporto_partida="Guarulhos", 
+                                aeroporto_chegada="Salvador")
 
-    # Rota.objects.create(id=1, 
-    #                     aeroporto_partida="Guarulhos", 
-    #                     aeroporto_chegada="Santos Dumont")
-    # Rota.objects.create(id=2, 
-    #                     aeroporto_partida="Guarulhos", 
-    #                     aeroporto_chegada="Salvador")
-    # Rota.objects.create(id=3, 
-    #                     aeroporto_partida="Congonhas", 
-    #                     aeroporto_chegada="Brasília")
-    # Rota.objects.create(id=4, 
-    #                     aeroporto_partida="Brasília", 
-    #                     aeroporto_chegada="Congonhas")
-    pass
+    rota6 = Rota.objects.create(id=6, 
+                                aeroporto_partida="Salvador", 
+                                aeroporto_chegada="Guarulhos")
+                            
+    # Create Voo objects and VooDinamico objects
+
+    # Voo1: GOL, rota1, dia 03/11/2022
+    voo1 = Voo.objects.create(id=1,
+                              rota=rota1,
+                              chegada_prevista=datetime.datetime(2022, 11, 3, 3, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 3, 4, 5),
+                              companhia_aerea="GOL")
+    VooDinamico.objects.create(id=1,
+                               voo=voo1,
+                               status=status8,
+                               partida_real=datetime.datetime(2022, 11, 3, 3, 10),
+                               chegada_real=datetime.datetime(2022, 11, 3, 4, 15))
+
+    # Voo2: GOL, rota2, dia 03/11/2022
+    voo2 = Voo.objects.create(id=2,
+                              rota=rota2,
+                              chegada_prevista=datetime.datetime(2022, 11, 3, 11, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 3, 12, 5),
+                              companhia_aerea="GOL")
+    VooDinamico.objects.create(id=2,
+                               voo=voo2,
+                               status=status8,
+                               partida_real=datetime.datetime(2022, 11, 3, 11, 0),
+                               chegada_real=datetime.datetime(2022, 11, 3, 12, 5))
+
+    # Voo3: GOL, rota3, dia 27/10/2022
+    voo3 = Voo.objects.create(id=3,
+                              rota=rota3,
+                              chegada_prevista=datetime.datetime(2022, 10, 27, 9, 20),
+                              partida_prevista=datetime.datetime(2022, 10, 27, 11, 0),
+                              companhia_aerea="GOL")
+    VooDinamico.objects.create(id=3,
+                               voo=voo3,
+                               status=status8,
+                               partida_real=datetime.datetime(2022, 11, 3, 9, 40),
+                               chegada_real=datetime.datetime(2022, 11, 3, 11, 20))
+
+
+    # Voo4: GOL, rota4, dia 10/11/2022 (PROGRAMADO)
+    voo4 = Voo.objects.create(id=4,
+                              rota=rota4,
+                              chegada_prevista=datetime.datetime(2022, 11, 10, 9, 20),
+                              partida_prevista=datetime.datetime(2022, 11, 10, 11, 0),
+                              companhia_aerea="GOL")
+    VooDinamico.objects.create(id=4,
+                               voo=voo4,
+                               status=status3,
+                               partida_real=None,
+                               chegada_real=None)
+
+    # Voo5: LATAM, rota5, dia 04/11/2022 (CANCELADO)
+    voo5 = Voo.objects.create(id=5,
+                              rota=rota5,
+                              chegada_prevista=datetime.datetime(2022, 11, 4, 10, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 4, 12, 20),
+                              companhia_aerea="LATAM")
+    VooDinamico.objects.create(id=5,
+                               voo=voo5,
+                               status=status2,
+                               partida_real=None,
+                               chegada_real=None)
+
+    # Voo6: LATAM, rota6, dia 11/11/2022 (Ainda não ocorreu)
+    voo6 = Voo.objects.create(id=6,
+                              rota=rota6,
+                              chegada_prevista=datetime.datetime(2022, 11, 11, 10, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 11, 12, 20),
+                              companhia_aerea="LATAM")
+    VooDinamico.objects.create(id=6,
+                               voo=voo6,
+                               status=status9,
+                               partida_real=None,
+                               chegada_real=None)
+
+    # Voo7: LATAM, rota1, dia 10/10/2022 (PRONTO)
+    voo7 = Voo.objects.create(id=7,
+                              rota=rota1,
+                              chegada_prevista=datetime.datetime(2022, 11, 10, 8, 40),
+                              partida_prevista=datetime.datetime(2022, 11, 10, 9, 45),
+                              companhia_aerea="LATAM")
+    VooDinamico.objects.create(id=7,
+                               voo=voo7,
+                               status=status5,
+                               partida_real=None,
+                               chegada_real=None)
+
+    # Voo8: AZUL, rota1, dia 10/10/2022 (EM VOO)
+    voo8 = Voo.objects.create(id=8,
+                              rota=rota1,
+                              chegada_prevista=datetime.datetime(2022, 11, 10, 8, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 10, 9, 5),
+                              companhia_aerea="AZUL")
+    VooDinamico.objects.create(id=8,
+                               voo=voo8,
+                               status=status7,
+                               partida_real=datetime.datetime(2022, 11, 10, 8, 10),
+                               chegada_real=None)
+
+    # Voo9: AZUL, rota2, dia 07/10/2022
+    voo9 = Voo.objects.create(id=9,
+                              rota=rota2,
+                              chegada_prevista=datetime.datetime(2022, 11, 7, 20, 0),
+                              partida_prevista=datetime.datetime(2022, 11, 7, 21, 5),
+                              companhia_aerea="AZUL")
+    VooDinamico.objects.create(id=9,
+                               voo=voo9,
+                               status=status8,
+                               partida_real=datetime.datetime(2022, 11, 7, 20, 30),
+                               chegada_real=datetime.datetime(2022, 11, 7, 21, 35))

@@ -24,7 +24,8 @@ urlpatterns = [
     path('home/monitoramento_painel/', views.telaMonitoramentoPainelViews, name = 'painel_monitoracao'),
     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
     path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews, name = 'preview_relatorio'),
-    path('home/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos')
+    path('home/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos'),
+    path('home/create_db_data/', views.createBasicDBViews)
 ]
 
 urlpatterns += [
