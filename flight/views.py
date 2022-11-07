@@ -11,13 +11,50 @@ from fpdf import FPDF
 from .forms import *
 from .models import *
 
+login_limit = 0
+
+class User:
+  def __init__(self, id, name, password, post):
+    self.id = id
+    self.name = name
+    self.password = password
+    self.post = post
+
+LOGINS = [
+    User("operador","Milenha","qwer",1),
+    User("funcionario","Arthur","qwer",2),
+    User("gerente","Juliano","qwer",3)
+]
+
 # VIEWS INICIAIS 
 def loginViews(request):
-    return render(request, "login.html")
+    global login_limit
+    global LOGINS
+    context ={}
+    if request.method == 'POST':
+        if(login_limit == 2):
+            context['WarningMessage']= "Você atingiu o limite de 3 tentativas"
+        else:
+            user_id = request.POST['user_id']
+            password = request.POST['password']
 
-def telaInicialViews(request):
-    return render(request, "tela_inicial.html")
+            user = next((x for x in LOGINS if (x.id == user_id and x.password == password)), None)
 
+            if(user == None):
+                login_limit = login_limit + 1
+                context['WarningMessage']= "Login ou senha incorretos"
+                context['form']= LoginForm()
+            else:
+                login_limit = 0
+                return HttpResponseRedirect(reverse('menu', kwargs={'post':int(user.post)}))
+    else:
+        context['form']= LoginForm()
+    return render(request, "login.html", context)
+
+def telaInicialViews(request, post):
+    context ={}
+    context['post']= post
+    return render(request, "tela_inicial.html", context)
 
 # RELATORIO
 def telaGerarRelatorioViews(request):

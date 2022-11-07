@@ -5,6 +5,10 @@ import datetime
 from django import forms
 from django.forms import DateTimeInput
 
+# FORMS: LOGIN
+class LoginForm(forms.Form):
+    user_id= forms.CharField(label='Id do usuário')
+    password = forms.CharField(label='Senha', widget=forms.PasswordInput)
 
 # FORMS: RELATORIOS
 class MyDateInput(forms.widgets.DateInput):

@@ -18,36 +18,17 @@
         <div class="row">
             <div class="col-6">
                 <h2>Login</h2>
-                <form>
-                    <div class="form-group">
-                        <label for="IdInput">
-                            ID de usuário
-                        </label>
-                        <input class="form-control" id="IdInput" aria-describedby="emailHelp"
-                            placeholder="ID fo usuário">
-                        <small id="emailHelp" class="form-text text-muted">
-                            Descrição
-                        </small>
-                    </div>
-                    <div class="form-group">
-                        <label for="PasswordInput">
-                            Senha
-                        </label>
-                        <input type="password" class="form-control" id="PasswordInput" placeholder="Password">
-                    </div>
-                    <div class="form-group form-check">
-                        <input type="checkbox" class="form-check-input" id="exampleCheck1">
-                        <label class="form-check-label" for="exampleCheck1">
-                            Lembre de mim
-                        </label>
-                    </div>
-                    <button class="btn btn-primary" id="submit" onclick="login()">Login</button>
+                <form method = "post">
+                    {% csrf_token %}
+                    {{form.as_p }}
+                    <input class="btn btn-primary" type="submit" value="Login"/>
+                    <label class="form-check-label" for="exampleCheck1">
+                        {{ WarningMessage }}
+                    </label>
                 </form>
             </div>
         </div>
     </div>
 </body>
-
-<script src="../static/js/login.js"></script>
 
 </html>

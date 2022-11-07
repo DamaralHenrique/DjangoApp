@@ -19,7 +19,7 @@
             <a class="navbar-brand" href="#">Nome da empresa</a>
         </div>
         <div>
-            <a href="../" class="btn btn-primary">
+            <a href="../../" class="btn btn-primary">
                 Logout
             </a>
         </div>
@@ -27,7 +27,9 @@
 
 
     <div class="container">
+        
         <div class="row">
+            {% if post == 3 %}
             <div class="col-sm-6" id="flight-report">
                 <div class="card">
                     <div class="card-body">
@@ -38,12 +40,13 @@
                             Gera um relatório sobre partidas, chegadas, por empresa,
                             ou de movimentação de voos em um período.
                         </p>
-                        <a href="gerar_relatorio/" class="btn btn-primary"
+                        <a href="../gerar_relatorio/" class="btn btn-primary"
                         >GERAR RELATÓRIOS
                     </a>
                     </div>
                 </div>
             </div>
+            {% elif post == 2 %}
             <div class="col-sm-6" id="flight-monitor">
                 <div class="card">
                     <div class="card-body">
@@ -54,12 +57,13 @@
                             Consulta e atualização das informações
                             acerca dos voos cadastrados previamente.
                         </p>
-                        <a href="monitoramento_painel/" class="btn btn-primary">
+                        <a href="../monitoramento_painel/" class="btn btn-primary">
                             MONITORAR VOOS
                         </a>
                     </div>
                 </div>
             </div>
+            {% else %}
             <div class="col-sm-6" id="flight-manegement">
                 <div class="card">
                     <div class="card-body">
@@ -71,17 +75,16 @@
                             com também a funcionalidade adicional/alternativa de visualização,
                             atualização dos dados e deleção do cadastro de voos presentes.
                         </p>
-                        <a href="lista_voos/" class="btn btn-primary">
+                        <a href="../lista_voos/" class="btn btn-primary">
                             GERENCIAR VOOS
                         </a>
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 
 </body>
-
-<script src="../static/js/tela_inicial.js"></script>
 
 </html>
