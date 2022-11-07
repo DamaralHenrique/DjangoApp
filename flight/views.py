@@ -67,32 +67,106 @@ def telaGerarRelatorioViews(request):
             'form': form,
         }
 
-        date_format = "%Y-%m-%d"
-        initial_date = datetime.datetime.strptime(request.POST['initial_date'], date_format)
-        final_date = datetime.datetime.strptime(request.POST['final_date'], date_format)
+        if int(form.data['report_type']) == 1: # 'Movimentação de voos por período'
+            if not form.data['initial_date'] or not form.data['final_date']:
+                messages.warning(request, 'Campos "Initail date" e "Final date" devem ser preenchidos para este tipo de relatório!')
+            else:
+                date_format = "%Y-%m-%d"
+                initial_date = datetime.datetime.strptime(request.POST['initial_date'], date_format)
+                final_date = datetime.datetime.strptime(request.POST['final_date'], date_format)
 
-        if initial_date.date() > datetime.date.today():
-            print('Data inicial maior que a atual!')
-            
-        if final_date.date() > datetime.date.today():
-            print('Data final maior que a atual!')
+                if initial_date.date() > datetime.date.today():
+                    messages.warning(request, 'Data inicial maior que a atual!')
+                
+                # elif final_date.date() > datetime.date.today():
+                #     messages.warning(request, 'Data final maior que a atual!')
 
-        if initial_date.date() >= final_date.date():
-            print('Data inicial maior que a fina!')
+                elif initial_date.date() >= final_date.date():
+                    messages.warning(request, 'Data inicial maior que a final!')
 
-        # Check if the form is valid:
-        if form.is_valid():
-            # redirect to a new URL:
-            return HttpResponseRedirect(reverse('menu'))
-        else:
-            messages.warning(request, 'Erro nos campos!')
+                else:
+                    # Pegar tabela com cada um desses voos
+                    voos_partidas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date)
+                    voos_chegadas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date)
 
-    # If this is a GET (or any other method) create the default form
-    else:
-        context ={}
-        context['form']= ReportForm()
+                    # Pegar numero de voos que chegaram e que partiram em um periodo
+                    num_partidas = voos_partidas.count()
+                    num_chegadas = voos_chegadas.count()
 
-    return render(request, "relatorio_gerar.html", context)
+                    context = {"voos_partidas": voos_partidas,
+                               "voos_chegadas": voos_chegadas,
+                               "num_partidas": num_partidas,
+                               "num_chegadas": num_chegadas}
+
+                    voo_data_partida = []
+                    voo_data_chegada = []
+
+                    for voo in voos_partidas:
+                        voo_data = {
+                            "Companhia Aérea": voo.voo.companhia_aerea,
+                            "Voo": voo.voo.id,
+                            "Destino": voo.voo.rota.aeroporto_chegada,
+                            "Partida Prevista": voo.voo.partida_prevista.strftime("%m/%d/%Y, %H:%M:%S"),
+                            "Partida Real": voo.partida_real.strftime("%m/%d/%Y, %H:%M:%S")
+                        }
+                        voo_data_partida.append(voo_data)
+                    
+                    for voo in voos_chegadas:
+                        voo_data = {
+                            "Companhia Aérea": voo.voo.companhia_aerea,
+                            "Voo": voo.voo.id,
+                            "Origem": voo.voo.rota.aeroporto_partida,
+                            "Chegada Prevista": voo.voo.chegada_prevista.strftime("%m/%d/%Y, %H:%M:%S"),
+                            "Chegada Real": voo.chegada_real.strftime("%m/%d/%Y, %H:%M:%S")
+                        }
+                        voo_data_chegada.append(voo_data)
+
+                    test_context = {
+                        "voos_partida": voo_data_partida,
+                        "voos_chegada": voo_data_chegada,
+                        "num_partidas": num_partidas,
+                        "num_chegadas": num_chegadas,
+                        "data_inicial": request.POST['initial_date'],
+                        "data_final": request.POST['final_date'],
+                        "voo_data_companhia": ""
+                    }
+
+                    request.session['report_context'] = test_context
+                    return render(request, "relatorio_preview.html", context)
+
+        else: # 'Partidas e chegadas por empresas'
+            companhias_aereas = ["GOL", "LATAM", "AZUL"]
+            voo_data = []
+            for companhia_aerea in companhias_aereas:
+
+                voos = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea)
+                num_voos = voos.count()
+
+                voo_data_companhia = {
+                    "companhia_aerea": companhia_aerea,
+                    "num_voos": num_voos
+                }
+                voo_data.append(voo_data_companhia)
+                
+            session_data = {
+                "voos_partida": "",
+                "voos_chegada": "",
+                "num_partidas": "",
+                "num_chegadas": "",
+                "data_inicial": "",
+                "data_final": "",
+                "voo_data_companhia": voo_data
+            }
+            context = {"voo_data_companhia": voo_data}
+            request.session['report_context'] = session_data
+            return render(request, "relatorio_preview.html", context)
+
+    template = loader.get_template('relatorio_gerar.html')
+
+    context ={}
+    context['form']= ReportForm()
+
+    return HttpResponse(template.render(context, request))
 
 
 def telaPreviewRelatorioViews(request):
@@ -100,22 +174,61 @@ def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html", context)
 
 def report(request):
-    sales = [
-        {"item": "Keyboard", "amount": "$120,00"},
-        {"item": "Mouse", "amount": "$10,00"},
-        {"item": "House", "amount": "$1 000 000,00"},
-    ]
+    print("aaaaaaaaaaaaaaa")
+    print(request.session.get('report_context'))
+
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
-    pdf.set_font('courier', 'B', 16)
-    pdf.cell(40, 10, 'This is what you have sold this month so far:',0,1)
-    pdf.cell(40, 10, '',0,1)
-    pdf.set_font('courier', '', 12)
-    pdf.cell(200, 8, f"{'Item'.ljust(30)} {'Amount'.rjust(20)}", 0, 1)
-    pdf.line(10, 30, 150, 30)
-    pdf.line(10, 38, 150, 38)
-    for line in sales:
-        pdf.cell(200, 8, f"{line['item'].ljust(30)} {line['amount'].rjust(20)}", 0, 1)
+    voo_data = request.session.get('report_context')
+    if not voo_data["voo_data_companhia"]: # Relatório de Movimentação de voos
+        voos_partida = voo_data["voos_partida"]
+        voos_chegada = voo_data["voos_chegada"]
+        num_partidas = voo_data["num_partidas"]
+        num_chegadas = voo_data["num_chegadas"]
+        data_inicial = voo_data["data_inicial"]
+        data_final = voo_data["data_final"]
+
+        pdf.set_font('courier', 'B', 16)
+        pdf.cell(40, 10, 'Movimentação de voos',0,1)
+        pdf.cell(100, 10, '',0,1)
+
+        # Datas
+        pdf.set_font('courier', '', 12)
+        pdf.cell(40, 10, 'Data inicial: ' + data_inicial,0,1)
+        pdf.cell(40, 10, 'Data final: ' + data_final,0,1)
+
+        # Partidas
+        pdf.cell(40, 10, 'Número de partidas: ' + str(num_partidas),0,1)
+
+        pdf.set_font('courier', 'B', 8)
+        pdf.cell(1000, 8, f"{'Companhia Aérea'.ljust(20)} {'Voo'.ljust(10)} {'Destino'.ljust(20)} {'Partida prevista'.ljust(30)} {'Partida real'.ljust(10)}", 0, 1)
+        # pdf.line(10, 40, 200, 40)
+        # pdf.line(10, 48, 200, 48)
+        pdf.set_font('courier', '', 8)
+        for line in voos_partida:
+            pdf.cell(1000, 8, f"{line['Companhia Aérea'].ljust(20)} {str(line['Voo']).ljust(10)} {line['Destino'].ljust(20)} {line['Partida Prevista'].ljust(30)} {line['Partida Real'].ljust(10)}", 0, 1)
+
+        # Chegadas
+        pdf.set_font('courier', '', 12)
+        pdf.cell(40, 10, 'Número de chegadas: ' + str(num_chegadas),0,1)
+
+        pdf.set_font('courier', 'B', 8)
+        pdf.cell(1000, 8, f"{'Companhia Aérea'.ljust(20)} {'Voo'.ljust(10)} {'Origem'.ljust(20)} {'Chegada prevista'.ljust(30)} {'Chegada real'.ljust(10)}", 0, 1)
+        # pdf.line(10, 30, 200, 30)
+        # pdf.line(10, 38, 200, 38)
+        pdf.set_font('courier', '', 8)
+        for line in voos_chegada:
+            pdf.cell(1000, 8, f"{line['Companhia Aérea'].ljust(20)} {str(line['Voo']).ljust(10)} {line['Origem'].ljust(20)} {line['Chegada Prevista'].ljust(30)} {line['Chegada Real'].ljust(10)}", 0, 1)
+
+    else: # Relatório de voos por companhia
+        voo_data_companhia = voo_data["voo_data_companhia"]
+
+        pdf.set_font('courier', 'B', 16)
+        pdf.cell(40, 10, 'Número de voos por companhia',0,1)
+        pdf.cell(100, 10, '',0,1)
+        
+        for line in voo_data_companhia:
+            pdf.cell(1000, 8, f"{line['companhia_aerea'].ljust(20)} {str(line['num_voos']).ljust(10)}", 0, 1)
 
     pdf.output('report.pdf', 'F')
     

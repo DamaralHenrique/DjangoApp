@@ -23,7 +23,7 @@ urlpatterns = [
     path('home/<int:post>/', views.telaInicialViews, name = 'menu'),
     path('home/monitoramento_painel/', views.telaMonitoramentoPainelViews, name = 'painel_monitoracao'),
     path('home/gerar_relatorio/', views.telaGerarRelatorioViews),
-    path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews),
+    path('home/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews, name = 'preview_relatorio'),
     path('home/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos')
 ]
 
@@ -38,5 +38,5 @@ urlpatterns += [
 ]
 
 urlpatterns += [
-    path('home/gerar_relatorio/preview_relatorio/report/', views.report)
+    path('home/gerar_relatorio/report/', views.report, name = 'report')
 ]

@@ -32,14 +32,10 @@
             </p>
             <hr class="my-4">
             <p>
-                Confirmar operação (ADICIONAR FUNCIONALIDADE DE BAIXAR RELATÓRIO):
+                Confirmar operação
             </p>
             <div class="row">
-                <a href="../../"
-                    class="btn btn-primary"
-                    style="margin-right: 10px">
-                    VOLTAR
-                </a>
+                <input class="btn btn-primary" style="margin-right: 10px" type="button" value="VOLTAR" onclick="history.back()">
                 <a href="report/"
                     class="btn btn-primary">
                     BAIXAR RELATÓRIO
@@ -47,74 +43,92 @@
             </div>
         </div>
     </div>
-
     <div class="container">
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Id
-                        </h5>
-                        <p class="card-text">
-                            {{vooDinamico.id}}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Rota
-                        </h5>
-                        <p class="card-text">
-                            {{vooDinamico.voo.rota.id}}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Partida
-                        </h5>
-                        <p class="card-text">
-                            {{vooDinamico.partida_real}}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Chegada
-                        </h5>
-                        <p class="card-text">
-                            {{vooDinamico.chegada_real}}
-                        </p>
-                    </div>
-                </div>
-            </div>
-
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-body">
-                        <h5 class="card-title">
-                            Status
-                        </h5>
-                        <p class="card-text">
-                            {{vooDinamico.status.titulo}}
-                        </p>
-                    </div>
+        {% if num_partidas %}
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Número de partidas: {{num_partidas}}
+                    </h5>
                 </div>
             </div>
         </div>
+        <hr class="my-4">
+        {% endif %}
+
+
+        {% if voos_partidas %}
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Destino</th>
+                <th>Partida Prevista</th>
+                <th>Partida Real</th>
+            </tr>
+            {% for vooDinamico in voos_chegadas %}
+            <tr>
+                <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                <td>{{vooDinamico.voo.id}}</td>
+                <td>{{vooDinamico.voo.rota.aeroporto_chegada}}</td>
+                <td>{{vooDinamico.voo.partida_prevista}}</td>
+                <td>{{vooDinamico.partida_real}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        <hr class="my-4">
+        {% endif %}
+
+
+        {% if num_chegadas %} 
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-body">
+                    <h5 class="card-title">
+                        Número de chegadas: {{num_chegadas}}
+                    </h5>
+                </div>
+            </div>
+        </div>
+        <hr class="my-4">
+        {% endif %}
+
+
+        {% if voos_chegadas %}
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Origem</th>
+                <th>Chegada Prevista</th>
+                <th>Chegada Real</th>
+            </tr>
+            {% for vooDinamico in voos_chegadas %}
+            <tr>
+                <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                <td>{{vooDinamico.voo.id}}</td>
+                <td>{{vooDinamico.voo.rota.aeroporto_partida}}</td>
+                <td>{{vooDinamico.voo.chegada_prevista}}</td>
+                <td>{{vooDinamico.chegada_real}}</td>
+            </tr>
+            {% endfor %}
+        </table>
+        {% endif %}
+
+        <!-- {% if voo_data %}
+            {% for voo in voo_data %}
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-body">
+                            <h5 class="card-title">
+                                Companhia: {{voo}}
+                            </h5>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %} -->
     </div>
 
 </body>

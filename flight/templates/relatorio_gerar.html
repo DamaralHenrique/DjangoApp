@@ -14,7 +14,7 @@
 </head>
 
 <body>
-    {% include 'messages.html' %}
+    <!-- {% include 'messages.html' %} -->
     <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
         <div class="container">
             <a class="navbar-brand" href="#">
@@ -32,15 +32,15 @@
                 Preencha as configurações para gerar o relatório.
             </p>
             <hr class="my-4">
-            <p>
+            <!-- <p>
                 Confirmar operação:
-            </p>
+            </p> -->
             <div class="row">
                 <input class="btn btn-primary" style="margin-right: 10px" type="button" value="DESCATRAR" onclick="history.back()">
-                <a href="preview_relatorio/"
+                <!-- <a href="preview_relatorio/"
                    class="btn btn-primary">
                     GERAR RELATÓRIO
-                </a>
+                </a> -->
             </div>
         </div>
     </div>
@@ -56,14 +56,21 @@
     </script>
 
     <div class="container">
-            <form action = "" method = "post">
-                {% csrf_token %}
-                {{form.as_p }}
-                <input type="submit" value="Submit"/>
-            </form>
+        <form action = "" method = "post">
+            {% csrf_token %}
+            {{form.as_p }}
+            <input type="submit" value="Gerar Relatório">
+        </form>
+        {% if messages %}
+        <div class="alert alert-danger m-2" role="alert">
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
         </div>
+        {% endif %}
+    </div>
 
-        <hr class="my-4">
+        <!-- <hr class="my-4">
 
         <div id="hidden_div" style="display:none;">
             <div class="row">
@@ -111,7 +118,8 @@
             </div>
 
         </div>
-    </div>
+        
+    </div> -->
 
 </body>
 </html>
