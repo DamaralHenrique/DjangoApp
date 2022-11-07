@@ -35,6 +35,21 @@ class ReportForm(forms.Form):
     initial_date = forms.DateField(widget=MyDateInput(), required=False)
     final_date = forms.DateField(widget=MyDateInput(), required=False)
 
+
+    def clean(self):
+        initial = self.cleaned_data['initial_date']
+        final = self.cleaned_data['final_date']
+        if initial > datetime.date.today():
+            raise forms.ValidationError("Data inicial maior que a atual!")
+                
+        elif final > datetime.date.today():
+            raise forms.ValidationError("Data final maior que a atual!")
+
+        elif initial >= final:
+            raise forms.ValidationError("Data inicial maior que a final!")
+
+        return 0
+
 # FORMS: CRUD
 ROTAS= [
     ('1', 'Rota 1 (Guarulhos -> Santos Dumont)'),

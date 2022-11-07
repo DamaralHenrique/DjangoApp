@@ -1,7 +1,8 @@
 from django.test import TestCase
 import datetime
 from flight.models import *
-from .forms import ReportForm
+from .forms import *
+from .views import is_new_status_valid
 
 class StatusVooTest(TestCase):
     @classmethod
@@ -167,6 +168,158 @@ class VooDinamicoTest(TestCase):
         tamFinal = len(VooDinamico.objects.all())
         self.assertEqual(tamFinal, tamOrig - 1)
 
+class CrudFormValidationTest(TestCase):
+    def test_incomplete_create_voo_form(self):
+        voo_data = {
+            "companhia_aerea": "GOL", 
+            "previsao_de_partida": datetime.datetime(2022, 10, 15, 21, 13), 
+            "previsao_de_chegada": datetime.datetime(2022, 10, 15, 22, 13), 
+            "rota": ""
+        }
+
+        form = CreateVoo(voo_data)
+        self.assertFalse(form.is_valid())
+
+    def test_incomplete_update_voo_form(self):
+        rota = Rota.objects.create(id=123, 
+                                   aeroporto_partida="Aeroporto 1", 
+                                   aeroporto_chegada="Aeroporto 2")
+        voo_data = {
+            "companhia_aerea": "", 
+            "previsao_de_partida": datetime.datetime(2022, 10, 15, 21, 13), 
+            "previsao_de_chegada": datetime.datetime(2022, 10, 15, 22, 13), 
+            "rota": rota
+        }
+
+        form = UpdateVoo(voo_data)
+        self.assertFalse(form.is_valid())
+
+    def test_type_error_form(self):
+        rota = Rota.objects.create(id=123, 
+                                   aeroporto_partida="Aeroporto 1", 
+                                   aeroporto_chegada="Aeroporto 2")
+        voo_data = {
+            "companhia_aerea": "GOL", 
+            "previsao_de_partida": "input_invalido", 
+            "previsao_de_chegada": datetime.datetime(2022, 10, 15, 22, 13), 
+            "rota": rota
+        }
+
+        form = UpdateVoo(voo_data)
+        self.assertFalse(form.is_valid())
+
+    def test_valid_create_form(self):
+        rota = Rota.objects.create(id=123, 
+                                   aeroporto_partida="Aeroporto 1", 
+                                   aeroporto_chegada="Aeroporto 2")
+        voo_data = {
+            "companhia_aerea": "GOL", 
+            "previsao_de_partida": datetime.datetime(2022, 10, 15, 21, 13), 
+            "previsao_de_chegada": datetime.datetime(2022, 10, 15, 22, 13), 
+            "rota": rota
+        }
+
+        form = CreateVoo(voo_data)
+        self.assertTrue(form.is_valid())
+
+class UpdateFlightStatusTest(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        StatusVoo.objects.create(titulo="Embarcando")
+        StatusVoo.objects.create(titulo="Cancelado")
+        StatusVoo.objects.create(titulo="Programado")
+        StatusVoo.objects.create(titulo="Taxiando")
+        StatusVoo.objects.create(titulo="Pronto")
+        StatusVoo.objects.create(titulo="Autorizado")
+        StatusVoo.objects.create(titulo="Em voo")
+        StatusVoo.objects.create(titulo="Aterrissando")
+        StatusVoo.objects.create(titulo="-")
+
+    def test_ok_1(self):
+        current_status = StatusVoo.objects.get(titulo="-")
+        new_status = StatusVoo.objects.get(titulo="Embarcando")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="-")
+        new_status = StatusVoo.objects.get(titulo="Cancelado")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+    def test_ok_2(self):
+        current_status = StatusVoo.objects.get(titulo="Embarcando")
+        new_status = StatusVoo.objects.get(titulo="Programado")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Programado")
+        new_status = StatusVoo.objects.get(titulo="Taxiando")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Taxiando")
+        new_status = StatusVoo.objects.get(titulo="Pronto")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Pronto")
+        new_status = StatusVoo.objects.get(titulo="Autorizado")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Autorizado")
+        new_status = StatusVoo.objects.get(titulo="Em voo")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Em voo")
+        new_status = StatusVoo.objects.get(titulo="Aterrissando")
+        self.assertTrue(is_new_status_valid(current_status.id, new_status.id))
+
+    def test_invalid_1(self):
+        # Não é possível transitar para outro status, uma vez que o voo está cancelado
+        current_status = StatusVoo.objects.get(titulo="Cancelado")
+
+        new_status = StatusVoo.objects.get(titulo="Embarcando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Programado")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Taxiando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Pronto")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Autorizado")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Em voo")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        new_status = StatusVoo.objects.get(titulo="Aterrissando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+    def test_invalid_2(self):
+        # Casos de transições inválidas que não seguem a ordem lógica da transição dos status
+        current_status = StatusVoo.objects.get(titulo="Embarcando")
+        new_status = StatusVoo.objects.get(titulo="Taxiando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Programado")
+        new_status = StatusVoo.objects.get(titulo="Em voo")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Taxiando")
+        new_status = StatusVoo.objects.get(titulo="Programado")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Pronto")
+        new_status = StatusVoo.objects.get(titulo="Embarcando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Autorizado")
+        new_status = StatusVoo.objects.get(titulo="Aterrissando")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
+        current_status = StatusVoo.objects.get(titulo="Em voo")
+        new_status = StatusVoo.objects.get(titulo="Cancelado")
+        self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
+
 class ReportFormTest(TestCase):
 
     def test_initial_date_after_final_date(self):
@@ -191,7 +344,7 @@ class ReportFormTest(TestCase):
         self.assertFalse(form.is_valid())
 
     def test_working_inputs(self):
-        """Test form is invalid if final_date is after current date."""
+        """Test form is valid."""
         initial_date = datetime.date.today() - datetime.timedelta(days=2)
         final_date = datetime.date.today() - datetime.timedelta(days=1)
         form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
