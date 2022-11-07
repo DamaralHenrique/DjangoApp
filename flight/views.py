@@ -100,8 +100,16 @@ def telaCreateVooViews(request):
         form = CreateVoo(request.POST)
 
         if form.is_valid():
+            rota_obj = Rota.objects.create(
+                id = form.data['rota'],
+                local_partida = form.data['local_de_partida'],
+                local_chegada = form.data['local_de_chegada'],
+                codigo_partida = form.data['codigo_de_partida'],
+                codigo_chegada = form.data['codigo_de_chegada'],
+            )
+            
             voo_obj = Voo.objects.create(
-                rota = Rota.objects.get(id=form.data['rota']),
+                rota = rota_obj,
                 chegada_prevista = form.data['previsao_de_chegada'],
                 partida_prevista = form.data['previsao_de_partida'],
                 companhia_aerea = form.data['companhia_aerea'],
@@ -125,10 +133,18 @@ def telaUpdateVooViews(request, id):
         form = UpdateVoo(request.POST)
 
         if form.is_valid():
-            Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id=form.data['rota']),
+            Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id = form.data['rota'],
+                                                                         local_partida = form.data['local_de_partida'],
+                                                                         local_chegada = form.data['local_de_chegada'],
+                                                                         codigo_partida = form.data['codigo_de_partida'],
+                                                                         codigo_chegada = form.data['codigo_de_chegada'],),
+                                                   aeroporto_partida=form.data['local_de_partida'],
+                                                   aeroporto_chegada=form.data['local_de_destino'],
                                                    partida_prevista=form.data['previsao_de_partida'],
                                                    chegada_prevista=form.data['previsao_de_chegada'], 
-                                                   companhia_aerea=form.data['companhia_aerea'])
+                                                   companhia_aerea=form.data['companhia_aerea'],
+                                                   codigo_partida=form.data['codigo_de_partida'],
+                                                   codigo_chegada=form.data['codigo_de_chegada'])
             return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
     else:
@@ -235,43 +251,77 @@ class ControleVoo():
         pass
 
 def createDummyData():
-    # StatusVoo.objects.create(titulo="embarcando")
-    # StatusVoo.objects.create(titulo="cancelado")
-    # StatusVoo.objects.create(titulo="programado")
-    # StatusVoo.objects.create(titulo="taxiando")
-    # StatusVoo.objects.create(titulo="pronto")
-    # StatusVoo.objects.create(titulo="autorizado")
-    # StatusVoo.objects.create(titulo="em voo")
-    # StatusVoo.objects.create(titulo="aterrissando")
+    StatusVoo.objects.create(titulo="embarcando")
+    StatusVoo.objects.create(titulo="cancelado")
+    StatusVoo.objects.create(titulo="programado")
+    StatusVoo.objects.create(titulo="taxiando")
+    StatusVoo.objects.create(titulo="pronto")
+    StatusVoo.objects.create(titulo="autorizado")
+    StatusVoo.objects.create(titulo="em voo")
+    StatusVoo.objects.create(titulo="aterrissando")
 
-    # rota1 = Rota.objects.create(id=123, 
-    #                             aeroporto_partida="Aeroporto 1", 
-    #                             aeroporto_chegada="Aeroporto 2")
-    # Voo.objects.create(id=1234,
-    #                    rota=rota1,
-    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-    #                    companhia_aerea="Companhia 1")
+    rota1 = Rota.objects.create(id=123, 
+                                aeroporto_partida="Aeroporto 1", 
+                                aeroporto_chegada="Aeroporto 2",
+                                codigo_chegada=1,
+                                codigo_partida=2)
+    Voo.objects.create(id=1234,
+                       rota=rota1,
+                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+                       companhia_aerea="Companhia 1")
 
-    # rota2 = Rota.objects.create(id=124, 
-    #                             aeroporto_partida="Aeroporto 12", 
-    #                             aeroporto_chegada="Aeroporto 23")
-    # Voo.objects.create(id=1235,
-    #                    rota=rota2,
-    #                    chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
-    #                    partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
-    #                    companhia_aerea="Companhia 2")
+    rota2 = Rota.objects.create(id=124, 
+                                aeroporto_partida="Aeroporto 12", 
+                                aeroporto_chegada="Aeroporto 23",
+                                codigo_chegada=2,
+                                codigo_partida=3)
+    Voo.objects.create(id=1235,
+                       rota=rota2,
+                       chegada_prevista=datetime.datetime(2022, 6, 10, 16, 00),
+                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+                       companhia_aerea="Companhia 2")
 
-    # Rota.objects.create(id=1, 
-    #                     aeroporto_partida="Guarulhos", 
-    #                     aeroporto_chegada="Santos Dumont")
-    # Rota.objects.create(id=2, 
-    #                     aeroporto_partida="Guarulhos", 
-    #                     aeroporto_chegada="Salvador")
-    # Rota.objects.create(id=3, 
-    #                     aeroporto_partida="Congonhas", 
-    #                     aeroporto_chegada="Brasília")
-    # Rota.objects.create(id=4, 
-    #                     aeroporto_partida="Brasília", 
-    #                     aeroporto_chegada="Congonhas")
+    rota3 = Rota.objects.create(id=125, 
+                                aeroporto_partida="Aeroporto 3", 
+                                aeroporto_chegada="Aeroporto 4",
+                                codigo_chegada=3,
+                                codigo_partida=4)
+    Voo.objects.create(id=1235,
+                       rota=rota3,
+                       chegada_prevista=datetime.datetime(2022, 6, 11, 11, 00),
+                       partida_prevista=datetime.datetime(2022, 6, 10, 10, 00),
+                       companhia_aerea="Companhia 3")
+
+    rota4 = Rota.objects.create(id=126, 
+                                aeroporto_partida="Aeroporto 1", 
+                                aeroporto_chegada="Aeroporto 4",
+                                codigo_chegada=4,
+                                codigo_partida=5)
+    Voo.objects.create(id=1235,
+                       rota=rota4,
+                       chegada_prevista=datetime.datetime(2022, 8, 2, 9, 00),
+                       partida_prevista=datetime.datetime(2022, 8, 1, 10, 00),
+                       companhia_aerea="Companhia 4")
+
+    Rota.objects.create(id=1, 
+                        aeroporto_partida="Guarulhos", 
+                        aeroporto_chegada="Santos Dumont",
+                        codigo_chegada=1,
+                        codigo_partida=2)
+    Rota.objects.create(id=2, 
+                        aeroporto_partida="Guarulhos", 
+                        aeroporto_chegada="Salvador",
+                        codigo_chegada=1,
+                        codigo_partida=3)
+    Rota.objects.create(id=3, 
+                        aeroporto_partida="Congonhas", 
+                        aeroporto_chegada="Brasília",
+                        codigo_chegada=4,
+                        codigo_partida=5)
+    Rota.objects.create(id=4, 
+                        aeroporto_partida="Brasília", 
+                        aeroporto_chegada="Congonhas",
+                        codigo_chegada=5,
+                        codigo_partida=4)
     pass

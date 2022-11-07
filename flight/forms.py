@@ -74,19 +74,23 @@ ROTAS= [
 
 class CreateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
-    rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
-    # local_de_partida = forms.CharField(max_length = 200)
-    # local_de_destino = forms.CharField(max_length = 200)
+    rota = forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
+    local_de_partida = forms.CharField(max_length = 200)
+    local_de_destino = forms.CharField(max_length = 200)
     previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
     previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    codigo_de_partida = forms.IntegerField(min_value= 0)
+    codigo_de_chegada = forms.IntegerField(min_value= 0)
 
 class UpdateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
-    rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
-    # local_de_partida = forms.CharField(max_length = 200)
-    # local_de_destino = forms.CharField(max_length = 200)
+    rota = forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
+    local_de_partida = forms.CharField(max_length = 200)
+    local_de_destino = forms.CharField(max_length = 200)
     previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
     previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    codigo_de_partida = forms.IntegerField(min_value= 0)
+    codigo_de_chegada = forms.IntegerField(min_value= 0)
 
 
 # FORMS: MONITORAMENTO
