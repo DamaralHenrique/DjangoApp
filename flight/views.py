@@ -174,9 +174,6 @@ def telaPreviewRelatorioViews(request):
     return render(request, "relatorio_preview.html", context)
 
 def report(request):
-    print("aaaaaaaaaaaaaaa")
-    print(request.session.get('report_context'))
-
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
     voo_data = request.session.get('report_context')
@@ -328,7 +325,6 @@ def telaMonitoramentoAtualizacaoViews(request, id):
             new_status_id = int(form.data['status'])
 
             if not is_new_status_valid(current_status_id, new_status_id):
-                print(is_new_status_valid(current_status_id, new_status_id))
                 messages.info(request, 'Novo status inválido!')
             
             else:
