@@ -60,17 +60,20 @@ ROTAS= [
     ('6', 'Rota 6 (Salvados -> Guarulhos)'),
 ]
 
+formatDate = "%Y-%m-%dT%H:%M"
+
 class CreateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
     rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
-    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
-    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}, format=formatDate))
+    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}, format=formatDate))
+
 
 class UpdateVoo(forms.Form):
     companhia_aerea = forms.CharField(max_length = 200)
     rota= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=ROTAS))
-    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
-    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}))
+    previsao_de_partida = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}, format=formatDate))
+    previsao_de_chegada = forms.DateTimeField(widget=DateTimeInput(attrs={'type': 'datetime-local'}, format=formatDate))
 
 
 # FORMS: MONITORAMENTO

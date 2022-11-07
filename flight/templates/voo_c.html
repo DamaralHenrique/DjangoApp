@@ -37,8 +37,11 @@
                 Confirme o cadastro:
             </p>
             <div class="row">
-                <input class="btn btn-primary" style="margin-right: 10px" type="button" value="CANCELAR" onclick="history.back()">
-                <input class="btn btn-primary" type="button" value="CONFIRMAR" onclick="history.back()">
+                <input class="btn btn-primary"
+                       style="margin-right: 10px"
+                       type="button"
+                       value="CANCELAR"
+                       onclick="history.back()">
             </div>
         </div>
     </div>
@@ -49,8 +52,15 @@
             <form action = "" method = "post">
                 {% csrf_token %}
                 {{form_create_voo.as_p }}
-                <input type="submit" value="Submit">
+                <input type="submit" value="CADASTRAR">
             </form>
+            {% if messages %}
+            <div class="alert alert-danger m-2" role="alert">
+                {% for message in messages %}
+                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                {% endfor %}
+            </div>
+            {% endif %}
         </div>
     </div>
 </body>

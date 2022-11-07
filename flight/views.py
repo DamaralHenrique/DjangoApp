@@ -1,4 +1,4 @@
-import datetime
+from datetime import datetime
 
 import pytz
 from django.shortcuts import render
@@ -178,6 +178,7 @@ def telaPreviewRelatorioViews(request):
     context ={}
     return render(request, "relatorio_preview.html", context)
 
+
 def report(request):
     pdf = FPDF('P', 'mm', 'A4')
     pdf.add_page()
@@ -236,6 +237,7 @@ def report(request):
     
     return FileResponse(open('report.pdf', 'rb'), as_attachment=True, content_type='application/pdf')
 
+
 # CRUD VOOS
 def telaListaVoosViews(request):
     # createDummyData() # DESCOMENTAR PARA CRIAR OS DADOS
@@ -246,6 +248,7 @@ def telaListaVoosViews(request):
         'voos': voos,
     }
     return HttpResponse(template.render(context, request))
+
 
 def telaCreateVooViews(request):
     if request.method == 'POST':
@@ -266,11 +269,23 @@ def telaCreateVooViews(request):
                 chegada_real=None
             )
 
-            return HttpResponseRedirect(reverse('lista_de_voos'))
-    
+            date_format = "%Y-%m-%dT%H:%M"
+            initial_date = datetime.datetime.strptime(form.data['previsao_de_partida'], date_format)
+            final_date = datetime.datetime.strptime(form.data['previsao_de_chegada'], date_format)
+
+            if initial_date.date() < datetime.date.today():
+                messages.warning(request, 'Data inicial menor que a atual!')
+            
+            elif final_date.date() < datetime.date.today():
+                messages.warning(request, 'Data final menor que a atual!')
+
+            elif initial_date.date() >= final_date.date():
+                messages.warning(request, 'Data inicial maior que a final!')
+
     context ={}
     context['form_create_voo']= CreateVoo()
-    return render(request, "voo_c.html", context)
+    template = loader.get_template('voo_c.html')
+    return HttpResponse(template.render(context, request))
 
 def telaUpdateVooViews(request, id):
     if request.method == 'POST':
@@ -281,7 +296,23 @@ def telaUpdateVooViews(request, id):
                                                    partida_prevista=form.data['previsao_de_partida'],
                                                    chegada_prevista=form.data['previsao_de_chegada'], 
                                                    companhia_aerea=form.data['companhia_aerea'])
-            return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
+            
+            
+            date_format = "%Y-%m-%dT%H:%M"
+            initial_date = datetime.datetime.strptime(form.data['previsao_de_partida'], date_format)
+            final_date = datetime.datetime.strptime(form.data['previsao_de_chegada'], date_format)
+
+            if initial_date.date() < datetime.date.today():
+                messages.warning(request, 'Data inicial menor que a atual!')
+            
+            elif final_date.date() < datetime.date.today():
+                messages.warning(request, 'Data final menor que a atual!')
+
+            elif initial_date.date() >= final_date.date():
+                messages.warning(request, 'Data inicial maior que a final!')
+            
+            else:
+                return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
     else:
         previsao_de_partida = datetime.date.today() # numero da partida atual do banco de dados
