@@ -21,7 +21,9 @@
                 <form method = "post">
                     {% csrf_token %}
                     {{form.as_p }}
-                    <input class="btn btn-primary" type="submit" value="Login"/>
+                    {% if isBlocked == false %}
+                        <input class="btn btn-primary" type="submit" value="Login"/>
+                    {% endif %}
                     <label class="form-check-label" for="exampleCheck1">
                         {{ WarningMessage }}
                     </label>

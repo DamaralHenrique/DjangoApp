@@ -37,7 +37,15 @@
                 Hora: {{time}}
             </p>
             <hr class="my-4">
-            <input class="btn btn-primary" type="button" value="VOLTAR" onclick="location.href = '../'">
+            <input class="btn btn-primary"
+                   type="button"
+                   value="VOLTAR"
+                   onclick="location.href = '../'">
+            <button class="btn btn-primary"
+                    type="button" 
+                    onClick="window.location.reload();">
+                Atualizar
+            </button>
         </div>
     </div>
 
@@ -63,7 +71,7 @@
                     <td>{{vooDinamico.status.titulo}}</td>
                     <td>{{vooDinamico.voo.rota.aeroporto_chegada}}</td>
                     <td>{{vooDinamico.voo.partida_prevista}}</td>
-                    <td>{{vooDinamico.partida_real}}</td>
+                    <td>{{ vooDinamico.partida_real }}</td>
                     <td>
                         <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
                             Atualizar

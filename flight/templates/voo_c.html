@@ -41,7 +41,7 @@
                        style="margin-right: 10px"
                        type="button"
                        value="CANCELAR"
-                       onclick="history.back()">
+                       onclick="location.href = '../'">
             </div>
         </div>
     </div>
@@ -58,7 +58,9 @@
             {% if messages %}
             <div class="alert alert-danger m-2" role="alert">
                 {% for message in messages %}
-                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>
+                    {{ message }}
+                </div>
                 {% endfor %}
             </div>
             {% endif %}

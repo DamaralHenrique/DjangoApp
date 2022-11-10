@@ -35,6 +35,7 @@ class ReportForm(forms.Form):
     initial_date = forms.DateField(widget=MyDateInput(), required=False)
     final_date = forms.DateField(widget=MyDateInput(), required=False)
 
+    aeropoto = forms.CharField(max_length=200)
 
     def clean(self):
         initial = self.cleaned_data['initial_date']

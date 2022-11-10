@@ -1,4 +1,5 @@
 from datetime import datetime
+from dateutil.relativedelta import relativedelta
 
 import pytz
 from django.shortcuts import render
@@ -22,8 +23,10 @@ class User:
 
 LOGINS = [
     User("operador","Milenha","qwer",1),
-    User("funcionario","Arthur","qwer",2),
-    User("gerente","Juliano","qwer",3)
+    User("funcionario-companhia","Arthur","qwer",2),
+    User("gerente","Juliano","qwer",3),
+    User("funcionario-aeroporto","Amanda","1234",2),
+    User("piloto","Vitor","asdf",2)
 ]
 
 def createBasicDBViews(request):
@@ -36,22 +39,26 @@ def loginViews(request):
     global LOGINS
     context ={}
 
-    if request.method == 'POST':
-        if(login_limit == 2):
-            context['WarningMessage']= "Você atingiu o limite de 3 tentativas"
-        else:
-            user_id = request.POST['user_id']
-            password = request.POST['password']
+    if login_limit == 3:
+        context['WarningMessage']= "Você atingiu o limite de 3 tentativas"
+        context['isBlocked']= True
+    elif request.method == 'POST':
+        user_id = request.POST['user_id']
+        password = request.POST['password']
 
-            user = next((x for x in LOGINS if (x.id == user_id and x.password == password)), None)
+        user = next((x for x in LOGINS if (x.id == user_id and x.password == password)), None)
 
-            if(user == None):
-                login_limit = login_limit + 1
+        if(user == None):
+            login_limit = login_limit + 1
+            if(login_limit == 3):
+                context['WarningMessage']= "Você atingiu o limite de 3 tentativas"
+                context['isBlocked']= True
+            else:
                 context['WarningMessage']= "Login ou senha incorretos"
                 context['form']= LoginForm()
-            else:
-                login_limit = 0
-                return HttpResponseRedirect(reverse('menu', kwargs={'post':int(user.post)}))
+        else:
+            login_limit = 0
+            return HttpResponseRedirect(reverse('menu', kwargs={'post':int(user.post)}))
     else:
         context['form']= LoginForm()
     return render(request, "login.html", context)
@@ -80,19 +87,19 @@ def telaGerarRelatorioViews(request):
                 initial_date = datetime.datetime.strptime(request.POST['initial_date'], date_format)
                 final_date = datetime.datetime.strptime(request.POST['final_date'], date_format)
 
-                if initial_date.date() > datetime.date.today():
+                if initial_date > datetime.datetime.today():
                     messages.warning(request, 'Data inicial maior que a atual!')
                 
-                elif final_date.date() > datetime.date.today():
+                elif final_date > datetime.datetime.today():
                     messages.warning(request, 'Data final maior que a atual!')
 
-                elif initial_date.date() >= final_date.date():
+                elif initial_date >= final_date:
                     messages.warning(request, 'Data inicial maior que a final!')
 
                 else:
                     # Pegar tabela com cada um desses voos
-                    voos_partidas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date)
-                    voos_chegadas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date)
+                    voos_partidas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date + relativedelta(months=+1))
+                    voos_chegadas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date + relativedelta(months=+1))
 
                     # Pegar numero de voos que chegaram e que partiram em um periodo
                     num_partidas = voos_partidas.count()
@@ -140,16 +147,22 @@ def telaGerarRelatorioViews(request):
                     return render(request, "relatorio_preview.html", context)
 
         else: # 'Partidas e chegadas por empresas'
-            companhias_aereas = ["GOL", "LATAM", "AZUL"]
+            companhias_aereas = list(Voo.objects.all().values_list('companhia_aerea', flat = True).distinct())
+            # aeroporto = form.data['aeroporto']
+
             voo_data = []
             for companhia_aerea in companhias_aereas:
 
-                voos = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea)
-                num_voos = voos.count()
+                voos_chegadas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_partida="Guarulhos")
+                voos_partidas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_chegada="Guarulhos")
+                num_voos_chegadas = voos_chegadas.count()
+                num_voos_partidas = voos_partidas.count()
+
 
                 voo_data_companhia = {
                     "companhia_aerea": companhia_aerea,
-                    "num_voos": num_voos
+                    "num_voos_partidas": num_voos_partidas,
+                    "num_voos_chegadas": num_voos_chegadas,
                 }
                 voo_data.append(voo_data_companhia)
                 
@@ -167,10 +180,8 @@ def telaGerarRelatorioViews(request):
             return render(request, "relatorio_preview.html", context)
 
     template = loader.get_template('relatorio_gerar.html')
-
     context ={}
     context['form']= ReportForm()
-
     return HttpResponse(template.render(context, request))
 
 
@@ -226,12 +237,16 @@ def report(request):
     else: # Relatório de voos por companhia
         voo_data_companhia = voo_data["voo_data_companhia"]
 
-        pdf.set_font('courier', 'B', 16)
-        pdf.cell(40, 10, 'Número de voos por companhia',0,1)
+        pdf.set_font('courier', 'B', 8)
+        pdf.cell(1000, 8, f"{'Companhia'.ljust(0)} \
+                            {'N° partidas'.ljust(0)} \
+                            {'N° chegadas'.ljust(0)}", 0, 1)
         pdf.cell(100, 10, '',0,1)
         
         for line in voo_data_companhia:
-            pdf.cell(1000, 8, f"{line['companhia_aerea'].ljust(20)} {str(line['num_voos']).ljust(10)}", 0, 1)
+            pdf.cell(1000, 8, f"{line['companhia_aerea'].ljust(10)} \
+                                {str(line['num_voos_partidas']).ljust(10)} \
+                                {str(line['num_voos_chegadas']).ljust(10)}", 0, 1)
 
     pdf.output('report.pdf', 'F')
     
@@ -255,32 +270,33 @@ def telaCreateVooViews(request):
         form = CreateVoo(request.POST)
 
         if form.is_valid():
-            voo_obj = Voo.objects.create(
-                rota = Rota.objects.get(id=form.data['rota']),
-                chegada_prevista = form.data['previsao_de_chegada'],
-                partida_prevista = form.data['previsao_de_partida'],
-                companhia_aerea = form.data['companhia_aerea'],
-            )
-
-            VooDinamico.objects.create(
-                voo=voo_obj,
-                status=StatusVoo.objects.get(titulo="-"),
-                partida_real=None,
-                chegada_real=None
-            )
-
             date_format = "%Y-%m-%dT%H:%M"
             initial_date = datetime.datetime.strptime(form.data['previsao_de_partida'], date_format)
             final_date = datetime.datetime.strptime(form.data['previsao_de_chegada'], date_format)
 
-            if initial_date.date() < datetime.date.today():
+            if initial_date < datetime.datetime.today():
                 messages.warning(request, 'Data inicial menor que a atual!')
             
-            elif final_date.date() < datetime.date.today():
+            elif final_date < datetime.datetime.today():
                 messages.warning(request, 'Data final menor que a atual!')
 
-            elif initial_date.date() >= final_date.date():
+            elif initial_date >= final_date:
                 messages.warning(request, 'Data inicial maior que a final!')
+            else:
+                voo_obj = Voo.objects.create(
+                    rota = Rota.objects.get(id=form.data['rota']),
+                    chegada_prevista = form.data['previsao_de_chegada'],
+                    partida_prevista = form.data['previsao_de_partida'],
+                    companhia_aerea = form.data['companhia_aerea'],
+                )
+
+                VooDinamico.objects.create(
+                    voo=voo_obj,
+                    status=StatusVoo.objects.get(titulo="-"),
+                    partida_real=None,
+                    chegada_real=None
+                )
+                return HttpResponseRedirect(reverse('lista_de_voos'))
 
     context ={}
     context['form_create_voo']= CreateVoo()
@@ -291,27 +307,26 @@ def telaUpdateVooViews(request, id):
     if request.method == 'POST':
         form = UpdateVoo(request.POST)
 
-        if form.is_valid():
-            Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id=form.data['rota']),
-                                                   partida_prevista=form.data['previsao_de_partida'],
-                                                   chegada_prevista=form.data['previsao_de_chegada'], 
-                                                   companhia_aerea=form.data['companhia_aerea'])
-            
-            
+        if form.is_valid():           
             date_format = "%Y-%m-%dT%H:%M"
             initial_date = datetime.datetime.strptime(form.data['previsao_de_partida'], date_format)
             final_date = datetime.datetime.strptime(form.data['previsao_de_chegada'], date_format)
 
-            if initial_date.date() < datetime.date.today():
+            if initial_date < datetime.datetime.today():
                 messages.warning(request, 'Data inicial menor que a atual!')
             
-            elif final_date.date() < datetime.date.today():
+            elif final_date < datetime.datetime.today():
                 messages.warning(request, 'Data final menor que a atual!')
 
-            elif initial_date.date() >= final_date.date():
+            elif initial_date >= final_date:
                 messages.warning(request, 'Data inicial maior que a final!')
             
             else:
+                Voo.objects.all().filter(id=id).update(rota=Rota.objects.get(id=form.data['rota']),
+                                                       partida_prevista=form.data['previsao_de_partida'],
+                                                       chegada_prevista=form.data['previsao_de_chegada'], 
+                                                       companhia_aerea=form.data['companhia_aerea'])
+                
                 return HttpResponseRedirect(reverse('read_or_delete', kwargs={'id':int(id)}))
 
     else:
@@ -366,14 +381,28 @@ def telaMonitoramentoAtualizacaoViews(request, id):
                 messages.info(request, 'Novo status inválido!')
             
             else:
+                voo_id = VooDinamico.objects.all().filter(voo=id).values_list('voo')[0][0]
+                partida_prevista = Voo.objects.all().filter(voo=voo_id).values_list('partida_prevista')[0][0]
+                chegada_prevista = Voo.objects.all().filter(voo=voo_id).values_list('chegada_prevista')[0][0]
+                date_format = "%Y-%m-%dT%H:%M"
+                partida_prevista_dt = datetime.datetime.strptime(partida_prevista, date_format)
+                partida_prevista_dt = datetime.datetime.strptime(chegada_prevista, date_format)
                 tz = pytz.timezone('America/Sao_Paulo')
-                VooDinamico.objects.all().filter(voo=id).update(status=StatusVoo.objects.get(id=form.data['status']))
-                if new_status_id == 7:
-                    VooDinamico.objects.all().filter(voo=id).update(partida_real=datetime.datetime.now(tz))
-                elif new_status_id == 8:
-                    VooDinamico.objects.all().filter(voo=id).update(chegada_real=datetime.datetime.now(tz))
-            
-                return HttpResponseRedirect(reverse('painel_monitoracao'))
+
+                if new_status_id == 7 and partida_prevista_dt > datetime.datetime.now(tz):
+                    messages.info(request, 'Erro: horário de partida real anterior ao horário de pa previsto!')
+                elif new_status_id == 8 and partida_prevista_dt > datetime.datetime.now(tz):
+                    messages.info(request, 'Erro: horário de chegada real anterior ao horário de chegada prevista!')
+    
+                else: 
+                    VooDinamico.objects.all().filter(voo=id).update(status=StatusVoo.objects.get(id=form.data['status']))
+
+                    if new_status_id == 7:
+                        VooDinamico.objects.all().filter(voo=id).update(partida_real=datetime.datetime.now(tz))
+                    elif new_status_id == 8:
+                        VooDinamico.objects.all().filter(voo=id).update(chegada_real=datetime.datetime.now(tz))
+                
+                    return HttpResponseRedirect(reverse('painel_monitoracao'))
 
     context = {
         'vooDinamico': VooDinamico.objects.get(voo_id=id),

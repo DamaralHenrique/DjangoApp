@@ -67,20 +67,37 @@ python manage.py test
 
 Use the following credentials to test the login for each function:
 
+CRUD
+
 ```
 {
    id: "operador",
    password: "qwer",
-},
+}
+```
+
+MONITORAMENTO
+```
 {
-   id: "funcionario",
+   id: "funcionario-companhia",
    password: "qwer",
-},
+}
+```
+
+GERAR RELATÓRIOS
+```
 {
    id: "gerente",
    password: "qwer",
 },
-
+{
+   id: "funcionario-aeroporto",
+   password: "1234",
+},
+{
+   id: "piloto",
+   password: "asdf",
+},
 ```
 
 The visible pages for each function can be found in the "diagrama_casos-de_uso.png" image, which is inside the `assests` folder
