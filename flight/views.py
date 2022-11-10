@@ -382,16 +382,13 @@ def telaMonitoramentoAtualizacaoViews(request, id):
             
             else:
                 voo_id = VooDinamico.objects.all().filter(voo=id).values_list('voo')[0][0]
-                partida_prevista = Voo.objects.all().filter(voo=voo_id).values_list('partida_prevista')[0][0]
-                chegada_prevista = Voo.objects.all().filter(voo=voo_id).values_list('chegada_prevista')[0][0]
-                date_format = "%Y-%m-%dT%H:%M"
-                partida_prevista_dt = datetime.datetime.strptime(partida_prevista, date_format)
-                partida_prevista_dt = datetime.datetime.strptime(chegada_prevista, date_format)
+                partida_prevista = Voo.objects.all().filter(id=voo_id).values_list('partida_prevista')[0][0]
+                chegada_prevista = Voo.objects.all().filter(id=voo_id).values_list('chegada_prevista')[0][0]
                 tz = pytz.timezone('America/Sao_Paulo')
 
-                if new_status_id == 7 and partida_prevista_dt > datetime.datetime.now(tz):
-                    messages.info(request, 'Erro: horário de partida real anterior ao horário de pa previsto!')
-                elif new_status_id == 8 and partida_prevista_dt > datetime.datetime.now(tz):
+                if new_status_id == 7 and partida_prevista > datetime.datetime.now(tz):
+                    messages.info(request, 'Erro: horário de partida real anterior ao horário de partida previsto!')
+                elif new_status_id == 8 and chegada_prevista > datetime.datetime.now(tz):
                     messages.info(request, 'Erro: horário de chegada real anterior ao horário de chegada prevista!')
     
                 else: 
