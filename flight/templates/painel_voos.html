@@ -10,7 +10,7 @@
     <link rel="stylesheet" href="{% static 'css/bootstrap.min.css' %}">
     <link rel="stylesheet" href="{% static 'css/all.min.css' %}">
     <script src="{% static 'js/bootstrap.min.js' %}"></script>
-    <title>Painel de monitoramento</title>
+    <title>Painel de Voos</title>
 </head>
 
 <body>
@@ -25,11 +25,8 @@
     <div class="container">
         <div class="jumbotron">
             <h1 class="display-4">
-                MONITORAMENTO E ATUALIZAÇÃO
+                PAINEL DE VÔOS
             </h1>
-            <p class="lead">
-                Selecione o voo para sua consulta ou atualização.
-            </p>
             <p class="lead">
                 Data: {{date}}
             </p>
@@ -62,7 +59,6 @@
                 <th>Destino</th>
                 <th>Partida Prevista</th>
                 <th>Partida Real</th>
-                <th></th>
             </tr>
             {% for vooDinamico in voosDinamicosPartidas %}
                 <tr>
@@ -72,13 +68,6 @@
                     <td>{{vooDinamico.voo.rota.aeroporto_chegada}}</td>
                     <td>{{vooDinamico.voo.partida_prevista}}</td>
                     <td>{{ vooDinamico.partida_real }}</td>
-                    <td>
-                        {%if vooDinamico.status.titulo != "Em voo" and vooDinamico.status.titulo != "Aterrissando" %}
-                        <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
-                            Atualizar
-                        </a>
-                        {%endif%}
-                    </td>
                 </tr>
             {% endfor %}
         </table>
@@ -97,7 +86,6 @@
                 <th>Origem</th>
                 <th>Chegada Prevista</th>
                 <th>Chegada Real</th>
-                <th></th>
             </tr>
             {% for vooDinamico in voosDinamicosChegadas %}
                 <tr>
@@ -107,13 +95,6 @@
                     <td>{{vooDinamico.voo.rota.aeroporto_partida}}</td>
                     <td>{{vooDinamico.voo.chegada_prevista}}</td>
                     <td>{{vooDinamico.chegada_real}}</td>
-                    <td>
-                        {%if vooDinamico.status.titulo == "Em voo" %}
-                            <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
-                                Atualizar
-                            </a>
-                        {%endif%}
-                    </td>
                 </tr>
             {% endfor %}
         </table>

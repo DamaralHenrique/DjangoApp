@@ -366,14 +366,38 @@ def telaReadDeleteVooViews(request, id):
 
 # MONITORAMENTO DE VOOS DINAMICOS
 def telaMonitoramentoPainelViews(request):
-    voosDinamicos = VooDinamico.objects.all()
+    aeroporto = "Guarulhos"
+    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7)
+
     template = loader.get_template('monitoramento_painel.html')
     date = datetime.date.today()
     tz = pytz.timezone('America/Sao_Paulo')
     now = datetime.datetime.now(tz)
     time = now.strftime("%H:%M:%S")
     context = {
-        'voosDinamicos': voosDinamicos,
+        'voosDinamicosChegadas': voos_chegadas,
+        'voosDinamicosPartidas': voos_partidas,
+        'time': time,
+        'date': date,
+    }
+    return HttpResponse(template.render(context, request))
+
+    
+# MONITORAMENTO DE VOOS DINAMICOS
+def telaPainelVoosViews(request, id):
+    aeroporto = "Guarulhos"
+    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7)
+
+    template = loader.get_template('painel_voos.html')
+    date = datetime.date.today()
+    tz = pytz.timezone('America/Sao_Paulo')
+    now = datetime.datetime.now(tz)
+    time = now.strftime("%H:%M:%S")
+    context = {
+        'voosDinamicosChegadas': voos_chegadas,
+        'voosDinamicosPartidas': voos_partidas,
         'time': time,
         'date': date,
     }

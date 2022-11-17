@@ -23,7 +23,6 @@ urlpatterns = [
     path('home/<int:post>/', views.telaInicialViews, name = 'menu'),
     path('home/2/monitoramento_painel/', views.telaMonitoramentoPainelViews, name = 'painel_monitoracao'),
     path('home/3/gerar_relatorio/', views.telaGerarRelatorioViews),
-    path('home/3/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews, name = 'preview_relatorio'),
     path('home/1/lista_voos/', views.telaListaVoosViews, name = 'lista_de_voos'),
     path('home/create_db_data/', views.createBasicDBViews)
 ]
@@ -36,8 +35,10 @@ urlpatterns += [
 
 urlpatterns += [
     path('home/2/monitoramento_painel/monitoramento_atualizacao/<int:id>/', views.telaMonitoramentoAtualizacaoViews, name = 'atualizar_voo_monitorado'),
+    path('home/<int:id>/painel_voos/', views.telaPainelVoosViews)
 ]
 
 urlpatterns += [
+    path('home/3/gerar_relatorio/preview_relatorio/', views.telaPreviewRelatorioViews, name = 'preview_relatorio'),
     path('home/3/gerar_relatorio/report/', views.report, name = 'report')
 ]
