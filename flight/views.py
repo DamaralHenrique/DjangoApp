@@ -81,8 +81,8 @@ def telaGerarRelatorioViews(request):
             'formAirport': formAirport,
         }
 
-        if formDate.data is not None: # 'Movimentação de voos por período'
-            if not form.data['initial_date'] or not form.data['final_date']:
+        if "relatorio1" in request.POST:
+            if not formDate.data['initial_date'] or not formDate.data['final_date']:
                 messages.warning(request, 'Campos "Initial date" e "Final date" devem ser preenchidos para este tipo de relatório!')
             else:
                 date_format = "%Y-%m-%d"
@@ -151,8 +151,7 @@ def telaGerarRelatorioViews(request):
 
                     request.session['report_context'] = test_context
                     return render(request, "relatorio_preview.html", context)
-
-        else: # 'Partidas e chegadas por empresas'
+        elif "relatorio2" in request.POST:
             companhias_aereas = list(Voo.objects.all().values_list('companhia_aerea', flat = True).distinct())
             # aeroporto = form.data['aeroporto']
 

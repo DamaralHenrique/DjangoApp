@@ -55,7 +55,7 @@
                             <form action = "" method = "post">
                                 {% csrf_token %}
                                 {{form2.as_p }}
-                                <input type="submit" value="Gerar Relatório">
+                                <input type="submit" name="relatorio1" value="Gerar Relatório">
                             </form>
                     
                             {% if messages %}
@@ -80,7 +80,7 @@
                             <form action = "" method = "post">
                                 {% csrf_token %}
                                 {{form3.as_p }}
-                                <input type="submit" value="Gerar Relatório">
+                                <input type="submit" name="relatorio2" value="Gerar Relatório">
                             </form>
                     
                             {% if messages %}
