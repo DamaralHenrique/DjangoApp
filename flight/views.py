@@ -368,7 +368,7 @@ def telaReadDeleteVooViews(request, id):
 def telaMonitoramentoPainelViews(request):
     aeroporto = "Guarulhos"
     voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
-    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7,  status__lte=8)
 
     template = loader.get_template('monitoramento_painel.html')
     date = datetime.date.today()
@@ -388,7 +388,7 @@ def telaMonitoramentoPainelViews(request):
 def telaPainelVoosViews(request, id):
     aeroporto = "Guarulhos"
     voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
-    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7, status__lte=8)
 
     template = loader.get_template('painel_voos.html')
     date = datetime.date.today()
