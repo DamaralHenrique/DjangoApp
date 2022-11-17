@@ -1,5 +1,4 @@
 from datetime import datetime
-from dateutil.relativedelta import relativedelta
 
 import pytz
 from django.shortcuts import render
@@ -74,14 +73,17 @@ def telaGerarRelatorioViews(request):
     if request.method == 'POST':
 
         # Create a form instance and populate it with data from the request (binding):
-        form = ReportForm(request.POST)
+        formDate = ReportDateForm(request.POST)
+        formAirport = ReportAirportForm(request.POST)
+
         context = {
-            'form': form,
+            'formDate': formDate,
+            'formAirport': formAirport,
         }
 
-        if int(form.data['report_type']) == 1: # 'Movimentação de voos por período'
+        if formDate.data is not None: # 'Movimentação de voos por período'
             if not form.data['initial_date'] or not form.data['final_date']:
-                messages.warning(request, 'Campos "Initail date" e "Final date" devem ser preenchidos para este tipo de relatório!')
+                messages.warning(request, 'Campos "Initial date" e "Final date" devem ser preenchidos para este tipo de relatório!')
             else:
                 date_format = "%Y-%m-%d"
                 initial_date = datetime.datetime.strptime(request.POST['initial_date'], date_format)
@@ -98,8 +100,12 @@ def telaGerarRelatorioViews(request):
 
                 else:
                     # Pegar tabela com cada um desses voos
-                    voos_partidas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date + relativedelta(months=+1))
-                    voos_chegadas = VooDinamico.objects.all().filter(partida_real__gte=initial_date, partida_real__lte=final_date + relativedelta(months=+1))
+                    voos_partidas = VooDinamico.objects.all() \
+                                                       .filter(partida_real__gte=initial_date, partida_real__lte=final_date) \
+                                                       .exclude(partida_real__isnull=True)
+                    voos_chegadas = VooDinamico.objects.all() \
+                                                       .filter(chegada_real__gte=initial_date, chegada_real__lte=final_date) \
+                                                       .exclude(chegada_real__isnull=True)
 
                     # Pegar numero de voos que chegaram e que partiram em um periodo
                     num_partidas = voos_partidas.count()
@@ -150,11 +156,13 @@ def telaGerarRelatorioViews(request):
             companhias_aereas = list(Voo.objects.all().values_list('companhia_aerea', flat = True).distinct())
             # aeroporto = form.data['aeroporto']
 
+            aeroporto = request.POST['aeroporto']
+
             voo_data = []
             for companhia_aerea in companhias_aereas:
 
-                voos_chegadas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_partida="Guarulhos")
-                voos_partidas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_chegada="Guarulhos")
+                voos_chegadas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_partida=aeroporto)
+                voos_partidas = VooDinamico.objects.all().filter(voo__companhia_aerea=companhia_aerea, voo__rota__aeroporto_chegada=aeroporto)
                 num_voos_chegadas = voos_chegadas.count()
                 num_voos_partidas = voos_partidas.count()
 
@@ -181,7 +189,10 @@ def telaGerarRelatorioViews(request):
 
     template = loader.get_template('relatorio_gerar.html')
     context ={}
-    context['form']= ReportForm()
+    context['form1']= ReportTypeForm()
+    context['form2']= ReportDateForm()
+    context['form3']= ReportAirportForm()
+
     return HttpResponse(template.render(context, request))
 
 

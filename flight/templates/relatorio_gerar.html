@@ -41,82 +41,63 @@
             </div>
         </div>
     </div>
-     
-    <script type="text/javascript">
-        function showDiv(select){
-            if(select.value==1){
-                document.getElementById('hidden_div').style.display = "block";
-            } else{
-                document.getElementById('hidden_div').style.display = "none";
-            }
-        } 
-    </script>
 
     <div class="container">
-        <form action = "" method = "post">
-            {% csrf_token %}
-            {{form.as_p }}
-            <input type="submit" value="Gerar Relatório">
-        </form>
-        {% if messages %}
-        <div class="alert alert-danger m-2" role="alert">
-            {% for message in messages %}
-            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-            {% endfor %}
-        </div>
-        {% endif %}
-    </div>
-
-        <!-- <hr class="my-4">
-
-        <div id="hidden_div" style="display:none;">
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Companhia aérea
-                            </h5>
-                            <p class="card-text">
-                                <select id="id_companhia"
-                                        name="companhia">
-                                    <option value="0">
-                                        0
-                                    </option>
-                                    <option value="1">
-                                        1
-                                    </option>
-                                </select>
-                            </p>
-                        </div>
-                    </div>
-                </div>
-    
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">
-                                Tipo de voo
-                            </h5>
-                            <p class="card-text">
-                                <select id="id_voo"
-                                        name="voo">
-                                    <option value="0">
-                                        0
-                                    </option>
-                                    <option value="1">
-                                        1
-                                    </option>
-                                </select>
-                            </p>
-                        </div>
+        <div class="row">
+            
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Movimentação de voos por período
+                        </h5>
+                        <div class="container">
+                            <form action = "" method = "post">
+                                {% csrf_token %}
+                                {{form2.as_p }}
+                                <input type="submit" value="Gerar Relatório">
+                            </form>
+                    
+                            {% if messages %}
+                            <div class="alert alert-danger m-2" role="alert">
+                                {% for message in messages %}
+                                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>                   
                     </div>
                 </div>
             </div>
 
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-body">
+                        <h5 class="card-title">
+                            Partidas e chegadas por empresas
+                        </h5>
+                        <div class="container">
+                            <form action = "" method = "post">
+                                {% csrf_token %}
+                                {{form3.as_p }}
+                                <input type="submit" value="Gerar Relatório">
+                            </form>
+                    
+                            {% if messages %}
+                            <div class="alert alert-danger m-2" role="alert">
+                                {% for message in messages %}
+                                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+                                {% endfor %}
+                            </div>
+                            {% endif %}
+                        </div>                   
+                    </div>
+                </div>
+            </div>
         </div>
-        
-    </div> -->
+
+    </div>
 
 </body>
+
 </html>

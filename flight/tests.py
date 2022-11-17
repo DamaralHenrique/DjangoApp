@@ -320,32 +320,32 @@ class UpdateFlightStatusTest(TestCase):
         new_status = StatusVoo.objects.get(titulo="Cancelado")
         self.assertFalse(is_new_status_valid(current_status.id, new_status.id))
 
-class ReportFormTest(TestCase):
+# class ReportFormTest(TestCase):
 
-    def test_initial_date_after_final_date(self):
-        """Test form is invalid if initial_date is after final_date."""
-        initial_date = datetime.datetime.strptime('02/10/21', '%d/%m/%y').date()
-        final_date = datetime.datetime.strptime('01/10/21', '%d/%m/%y').date()
-        form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
-        self.assertFalse(form.is_valid())
+#     def test_initial_date_after_final_date(self):
+#         """Test form is invalid if initial_date is after final_date."""
+#         initial_date = datetime.datetime.strptime('02/10/21', '%d/%m/%y').date()
+#         final_date = datetime.datetime.strptime('01/10/21', '%d/%m/%y').date()
+#         form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
+#         self.assertFalse(form.is_valid())
 
-    def test_initial_date_after_current_date(self):
-        """Test form is invalid if initial_date is after current date."""
-        initial_date = datetime.date.today() + datetime.timedelta(days=1)
-        final_date = datetime.date.today() - datetime.timedelta(days=1)
-        form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
-        self.assertFalse(form.is_valid())
+#     def test_initial_date_after_current_date(self):
+#         """Test form is invalid if initial_date is after current date."""
+#         initial_date = datetime.date.today() + datetime.timedelta(days=1)
+#         final_date = datetime.date.today() - datetime.timedelta(days=1)
+#         form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
+#         self.assertFalse(form.is_valid())
 
-    def test_final_date_after_current_date(self):
-        """Test form is invalid if final_date is after current date."""
-        initial_date = datetime.date.today() - datetime.timedelta(days=1)
-        final_date = datetime.date.today() + datetime.timedelta(days=1)
-        form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
-        self.assertFalse(form.is_valid())
+#     def test_final_date_after_current_date(self):
+#         """Test form is invalid if final_date is after current date."""
+#         initial_date = datetime.date.today() - datetime.timedelta(days=1)
+#         final_date = datetime.date.today() + datetime.timedelta(days=1)
+#         form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
+#         self.assertFalse(form.is_valid())
 
-    def test_working_inputs(self):
-        """Test form is valid."""
-        initial_date = datetime.date.today() - datetime.timedelta(days=2)
-        final_date = datetime.date.today() - datetime.timedelta(days=1)
-        form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
-        self.assertTrue(form.is_valid())
+#     def test_working_inputs(self):
+#         """Test form is valid."""
+#         initial_date = datetime.date.today() - datetime.timedelta(days=2)
+#         final_date = datetime.date.today() - datetime.timedelta(days=1)
+#         form = ReportForm(data={'report_type': '1','initial_date': initial_date, 'final_date': final_date})
+#         self.assertTrue(form.is_valid())

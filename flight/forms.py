@@ -5,6 +5,8 @@ import datetime
 from django import forms
 from django.forms import DateTimeInput
 
+from .models import *
+
 # FORMS: LOGIN
 class LoginForm(forms.Form):
     user_id= forms.CharField(label='Id do usuário')
@@ -29,13 +31,33 @@ FLIGHT_COMPANIES = [
 class MyDateInput(forms.widgets.DateInput):
     input_type = 'date'
 
-class ReportForm(forms.Form):
+AEROPORTOS= []
+aeroportos_partida = list(Rota.objects.all().values_list('aeroporto_partida', flat = True).distinct())
+aeroportos_chegada = list(Rota.objects.all().values_list('aeroporto_chegada', flat = True).distinct())
+
+
+class ReportTypeForm(forms.Form):
     report_type= forms.CharField(label='Escolha o tipo de relatório a ser gerado:', 
                                  widget=forms.Select(choices=REPORT_TYPES))
-    initial_date = forms.DateField(widget=MyDateInput(), required=False)
-    final_date = forms.DateField(widget=MyDateInput(), required=False)
 
-    aeropoto = forms.CharField(max_length=200)
+class ReportAirportForm(forms.Form):
+    aeroportos_list = set(aeroportos_partida) | set(aeroportos_chegada)
+    for aeroporto_p in aeroportos_list:
+        AEROPORTOS.append((aeroporto_p, aeroporto_p))
+    aeroporto= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=AEROPORTOS))
+
+
+class ReportDateForm(forms.Form):
+    # report_type= forms.CharField(label='Escolha o tipo de relatório a ser gerado:', 
+    #                              widget=forms.Select(choices=REPORT_TYPES))
+    
+    initial_date = forms.DateField(widget=MyDateInput())
+    final_date = forms.DateField(widget=MyDateInput())
+    
+    # aeroportos_list = set(aeroportos_partida) | set(aeroportos_chegada)
+    # for aeroporto_p in aeroportos_list:
+    #     AEROPORTOS.append((aeroporto_p, aeroporto_p))
+    # aeroporto= forms.CharField(label='Rota do voo:', widget=forms.Select(choices=AEROPORTOS))
 
     def clean(self):
         initial = self.cleaned_data['initial_date']
@@ -51,6 +73,7 @@ class ReportForm(forms.Form):
 
         return 0
 
+
 # FORMS: CRUD
 ROTAS= [
     ('1', 'Rota 1 (Guarulhos -> Santos Dumont)'),
@@ -58,7 +81,7 @@ ROTAS= [
     ('3', 'Rota 3 (Guarulhos -> Brasília)'),
     ('4', 'Rota 4 (Brasília -> Guarulhos)'),
     ('5', 'Rota 5 (Guarulhos -> Salvador)'),
-    ('6', 'Rota 6 (Salvados -> Guarulhos)'),
+    ('6', 'Rota 6 (Salvador -> Guarulhos)'),
 ]
 
 formatDate = "%Y-%m-%dT%H:%M"
@@ -91,4 +114,3 @@ FLIGHT_STATUS = [
 
 class UpdateVooDinamicoStatus(forms.Form):
     status = forms.CharField(label='Status atualizado:', widget=forms.Select(choices=FLIGHT_STATUS))
-
