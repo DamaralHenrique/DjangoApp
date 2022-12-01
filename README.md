@@ -81,14 +81,6 @@ MONITORAMENTO
 {
    id: "funcionario-companhia",
    password: "qwer",
-}
-```
-
-GERAR RELATÓRIOS
-```
-{
-   id: "gerente",
-   password: "qwer",
 },
 {
    id: "funcionario-aeroporto",
@@ -97,8 +89,16 @@ GERAR RELATÓRIOS
 {
    id: "piloto",
    password: "asdf",
-},
+}
 ```
+```
+
+GERAR RELATÓRIOS
+```
+{
+   id: "gerente",
+   password: "qwer",
+}
 
 The visible pages for each function can be found in the "diagrama_casos-de_uso.png" image, which is inside the `assests` folder
 
