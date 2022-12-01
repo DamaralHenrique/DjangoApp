@@ -82,14 +82,6 @@
                                 {{form3.as_p }}
                                 <input type="submit" name="relatorio2" value="Gerar Relatório">
                             </form>
-                    
-                            {% if messages %}
-                            <div class="alert alert-danger m-2" role="alert">
-                                {% for message in messages %}
-                                <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
-                                {% endfor %}
-                            </div>
-                            {% endif %}
                         </div>                   
                     </div>
                 </div>
