@@ -23,6 +23,13 @@
     </nav>
 
     <div class="container">
+        {% if messages %}
+        <div class="alert alert-danger m-2" role="alert">
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
         <div class="jumbotron">
             <h1 class="display-4">
                 PAINEL DE VÔOS

@@ -32,6 +32,13 @@ def createBasicDBViews(request):
     createBasicData()
     return render(request, "create_db_data.html")
 
+def delete_everything():
+    StatusVoo.objects.all().delete()
+    Rota.objects.all().delete()
+    Voo.objects.all().delete()
+    VooDinamico.objects.all().delete()
+    Conexao.objects.all().delete()
+
 # VIEWS INICIAIS 
 def loginViews(request):
     global login_limit
@@ -389,6 +396,9 @@ def telaPainelVoosViews(request, id):
     aeroporto = "Guarulhos"
     voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
     voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7, status__lte=8)
+
+    if VooDinamico.objects.all().count() == 0:
+        messages.warning(request, 'Não há voos disponíveis!')
 
     template = loader.get_template('painel_voos.html')
     date = datetime.date.today()
