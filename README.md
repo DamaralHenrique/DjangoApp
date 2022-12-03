@@ -14,8 +14,9 @@
 
 ## Overview
 
-The project technical description can be found on the `assets/` folder:
-- Use cases: [Casos_de_uso.pdf](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/Casos_de_uso.pdf)
+The project technical description can be found on the `assets/documents` folder:
+- Use cases: [Casos_de_uso.pdf](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Casos_de_uso.pdf)
+- [Relatório de Testes de Validação](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Aula_12_-_Relatório_de_Testes_de_Validação.pdf)
 
 The folder `/assests/images` contains the following diagrams:
 - Classes diagrams (class 3);
