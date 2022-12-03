@@ -32,12 +32,20 @@ def createBasicDBViews(request):
     createBasicData()
     return render(request, "create_db_data.html")
 
+def deleteDBViews(request):
+    delete_everything()
+    return render(request, "delete_db_data.html")
+
 def delete_everything():
     StatusVoo.objects.all().delete()
     Rota.objects.all().delete()
     Voo.objects.all().delete()
     VooDinamico.objects.all().delete()
     Conexao.objects.all().delete()
+
+def delete_flights():
+    Voo.objects.all().delete()
+    VooDinamico.objects.all().delete()
 
 # VIEWS INICIAIS 
 def loginViews(request):

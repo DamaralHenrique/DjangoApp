@@ -63,6 +63,16 @@ python manage.py migrate
 python manage.py test
 ```
 
+## 🗃️ Database management
+
+To view the database, you can use a database manager, such as DBeaver. Moreover, some methods were created in order to create or delete data.
+
+- To create basic flight data, go to the folowing url path:
+`home/create_db_data/`
+
+- To delete all flights data (Voo and VooDinamico objects), go to the following url path:
+`home/delete_db_data/`
+
 ### Login test
 
 Use the following credentials to test the login for each function:
