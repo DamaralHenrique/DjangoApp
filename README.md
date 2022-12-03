@@ -64,16 +64,6 @@ python manage.py migrate
 python manage.py test
 ```
 
-## 🗃️ Database management
-
-To view the database, you can use a database manager, such as DBeaver. Moreover, some methods were created in order to create or delete data.
-
-- To create basic flight data, go to the folowing url path:
-`home/create_db_data/`
-
-- To delete all flights data (Voo and VooDinamico objects), go to the following url path:
-`home/delete_db_data/`
-
 ### Login test
 
 Use the following credentials to test the login for each function:
@@ -102,7 +92,6 @@ MONITORAMENTO
    password: "asdf",
 }
 ```
-```
 
 GERAR RELATÓRIOS
 ```
@@ -110,9 +99,19 @@ GERAR RELATÓRIOS
    id: "gerente",
    password: "qwer",
 }
+```
 
 The visible pages for each function can be found in the "diagrama_casos-de_uso.png" image, which is inside the `assests` folder
 
+## 🗃️ Database management
+
+To view the database, you can use a database manager, such as DBeaver. Moreover, some methods were created in order to create or delete data.
+
+- To create basic flight data, go to the folowing url path:
+`home/create_db_data/`
+
+- To delete all flights data (Voo and VooDinamico objects), go to the following url path:
+`home/delete_db_data/`
 
 ## REF
 The Django Template used is referenced from Thales Bruno: https://github.com/thalesbruno/django_bootstrap
