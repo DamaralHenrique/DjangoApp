@@ -73,7 +73,7 @@ CRUD
 ```
 {
    id: "operador",
-   password: "qwer",
+   password: "1234",
 }
 ```
 
@@ -81,7 +81,7 @@ MONITORAMENTO
 ```
 {
    id: "funcionario-companhia",
-   password: "qwer",
+   password: "1234",
 },
 {
    id: "funcionario-aeroporto",
@@ -89,7 +89,7 @@ MONITORAMENTO
 },
 {
    id: "piloto",
-   password: "asdf",
+   password: "1234",
 }
 ```
 
@@ -97,7 +97,7 @@ GERAR RELATÓRIOS
 ```
 {
    id: "gerente",
-   password: "qwer",
+   password: "1234",
 }
 ```
 
