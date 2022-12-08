@@ -21,11 +21,11 @@ class User:
     self.post = post
 
 LOGINS = [
-    User("operador","Milenha","qwer",1),
-    User("funcionario-companhia","Arthur","qwer",2),
-    User("gerente","Juliano","qwer",3),
-    User("funcionario-aeroporto","Amanda","1234",2),
-    User("piloto","Vitor","asdf",2)
+    User("operador","Milenha","1234",1),
+    User("funcionario","Arthur","1234",2),
+    User("piloto","Vitor","1234",2),
+    User("torre","Amanda","1234",2),
+    User("gerente","Juliano","1234",3)
 ]
 
 def createBasicDBViews(request):
