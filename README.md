@@ -80,11 +80,11 @@ CRUD
 MONITORAMENTO
 ```
 {
-   id: "funcionario-companhia",
+   id: "funcionario",
    password: "1234",
 },
 {
-   id: "funcionario-aeroporto",
+   id: "torre",
    password: "1234",
 },
 {
