@@ -14,6 +14,14 @@
 </head>
 
 <body>
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <div class="container">
+            <a class="navbar-brand" href="#">
+                Nome da empresa
+            </a>
+        </div>
+    </nav>
+
     <div class="container mt-4">
         <div class="row">
             <div class="col-6">
@@ -30,6 +38,89 @@
                 </form>
             </div>
         </div>
+    </div>
+
+    <hr class="my-4">
+
+    <div class="container">
+        {% if messages %}
+        <div class="alert alert-danger m-2" role="alert">
+            {% for message in messages %}
+            <div{% if message.tags %} class="{{ message.tags }}"{% endif %}>{{ message }}</div>
+            {% endfor %}
+        </div>
+        {% endif %}
+        <div class="jumbotron">
+            <h1 class="display-4">
+                PAINEL DE VÔOS
+            </h1>
+            <p class="lead">
+                Data: {{date}}
+            </p>
+            <p class="lead">
+                Hora: {{time}}
+            </p>
+            <hr class="my-4">
+            <button class="btn btn-primary"
+                    type="button" 
+                    onClick="window.location.reload();">
+                Atualizar
+            </button>
+        </div>
+    </div>
+
+    <div class="container">
+        <h3 class="display-6">
+            PARTIDAS
+        </h3>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Status</th>
+                <th>Destino</th>
+                <th>Partida Prevista</th>
+                <th>Partida Real</th>
+            </tr>
+            {% for vooDinamico in voosDinamicosPartidas %}
+                <tr>
+                    <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                    <td>{{vooDinamico.voo.id}}</td>
+                    <td>{{vooDinamico.status.titulo}}</td>
+                    <td>{{vooDinamico.voo.rota.aeroporto_chegada}}</td>
+                    <td>{{vooDinamico.voo.partida_prevista}}</td>
+                    <td>{{ vooDinamico.partida_real }}</td>
+                </tr>
+            {% endfor %}
+        </table>
+
+        <hr class="my-4">
+
+        <h3 class="display-6">
+            CHEGADAS
+        </h3>
+
+        <table class="table table-striped">
+            <tr>
+                <th>Companhia Aérea</th>
+                <th>Voo</th>
+                <th>Status</th>
+                <th>Origem</th>
+                <th>Chegada Prevista</th>
+                <th>Chegada Real</th>
+            </tr>
+            {% for vooDinamico in voosDinamicosChegadas %}
+                <tr>
+                    <td>{{vooDinamico.voo.companhia_aerea}}</td>
+                    <td>{{vooDinamico.voo.id}}</td>
+                    <td>{{vooDinamico.status.titulo}}</td>
+                    <td>{{vooDinamico.voo.rota.aeroporto_partida}}</td>
+                    <td>{{vooDinamico.voo.chegada_prevista}}</td>
+                    <td>{{vooDinamico.chegada_real}}</td>
+                </tr>
+            {% endfor %}
+        </table>
     </div>
 </body>
 
