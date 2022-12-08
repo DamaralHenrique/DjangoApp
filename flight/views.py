@@ -47,6 +47,24 @@ def delete_flights():
     Voo.objects.all().delete()
     VooDinamico.objects.all().delete()
 
+def get_flights():
+    aeroporto = "Guarulhos"
+    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7,  status__lte=8)
+
+    date = datetime.date.today()
+    tz = pytz.timezone('America/Sao_Paulo')
+    now = datetime.datetime.now(tz)
+    time = now.strftime("%H:%M:%S")
+    context = {
+        'voosDinamicosChegadas': voos_chegadas,
+        'voosDinamicosPartidas': voos_partidas,
+        'time': time,
+        'date': date,
+    }    
+
+    return context
+
 # VIEWS INICIAIS 
 def loginViews(request):
     global login_limit
@@ -75,6 +93,10 @@ def loginViews(request):
             return HttpResponseRedirect(reverse('menu', kwargs={'post':int(user.post)}))
     else:
         context['form']= LoginForm()
+
+    painel_voos = get_flights()
+    context.update(painel_voos)
+
     return render(request, "login.html", context)
 
 def telaInicialViews(request, post):
@@ -381,21 +403,9 @@ def telaReadDeleteVooViews(request, id):
 
 # MONITORAMENTO DE VOOS DINAMICOS
 def telaMonitoramentoPainelViews(request):
-    aeroporto = "Guarulhos"
-    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
-    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7,  status__lte=8)
-
     template = loader.get_template('monitoramento_painel.html')
-    date = datetime.date.today()
-    tz = pytz.timezone('America/Sao_Paulo')
-    now = datetime.datetime.now(tz)
-    time = now.strftime("%H:%M:%S")
-    context = {
-        'voosDinamicosChegadas': voos_chegadas,
-        'voosDinamicosPartidas': voos_partidas,
-        'time': time,
-        'date': date,
-    }
+    context = get_flights()
+
     return HttpResponse(template.render(context, request))
 
     
