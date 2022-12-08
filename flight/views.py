@@ -49,8 +49,8 @@ def delete_flights():
 
 def get_flights():
     aeroporto = "Guarulhos"
-    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
-    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7,  status__lte=8)
+    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto)
 
     date = datetime.date.today()
     tz = pytz.timezone('America/Sao_Paulo')
@@ -412,8 +412,8 @@ def telaMonitoramentoPainelViews(request):
 # MONITORAMENTO DE VOOS DINAMICOS
 def telaPainelVoosViews(request, id):
     aeroporto = "Guarulhos"
-    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto).exclude(status=8)
-    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto, status__gte=7, status__lte=8)
+    voos_partidas = VooDinamico.objects.all().filter(voo__rota__aeroporto_partida=aeroporto)
+    voos_chegadas = VooDinamico.objects.all().filter(voo__rota__aeroporto_chegada=aeroporto)
 
     if VooDinamico.objects.all().count() == 0:
         messages.warning(request, 'Não há voos disponíveis!')
