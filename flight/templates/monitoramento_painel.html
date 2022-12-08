@@ -73,7 +73,7 @@
                     <td>{{vooDinamico.voo.partida_prevista}}</td>
                     <td>{{ vooDinamico.partida_real }}</td>
                     <td>
-                        {%if vooDinamico.status.titulo != "Aterrissando" %}
+                        {%if vooDinamico.status.titulo != "Em voo" and vooDinamico.status.titulo != "Aterrissando" %}
                         <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
                             Atualizar
                         </a>
@@ -108,7 +108,7 @@
                     <td>{{vooDinamico.voo.chegada_prevista}}</td>
                     <td>{{vooDinamico.chegada_real}}</td>
                     <td>
-                        {%if vooDinamico.status.titulo != "Aterrissando" %}
+                        {%if vooDinamico.status.titulo == "Em voo" %}
                             <a href="monitoramento_atualizacao/{{vooDinamico.voo.id}}/">
                                 Atualizar
                             </a>
