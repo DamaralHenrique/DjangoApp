@@ -15,7 +15,9 @@
 ## Overview
 
 The project technical description can be found on the `assets/documents` folder:
-- Use cases: [Casos_de_uso.pdf](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Casos_de_uso.pdf)
+- [Casos de uso](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Casos_de_uso.pdf)
+- [Modelo de Análise](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Modelo%20de%20An%C3%A1lise.pdf)
+- [Plano de testes de validação](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Plano%20de%20testes%20de%20valida%C3%A7%C3%A3o.pdf)
 - [Relatório de Testes de Validação](https://github.com/DamaralHenrique/DjangoApp/blob/main/assets/documents/Aula%2012%20-%20Relat%C3%B3rio%20de%20Testes%20de%20Valida%C3%A7%C3%A3o.pdf)
 
 The folder `/assests/images` contains the following diagrams:
@@ -112,6 +114,10 @@ To view the database, you can use a database manager, such as DBeaver. Moreover,
 
 - To delete all flights data (Voo and VooDinamico objects), go to the following url path:
 `home/delete_db_data/`
+
+## ☁️ Deploy
+
+The project was deployed using [pythonanywhere](https://www.pythonanywhere.com/), and can be found [here](http://henriquehdm.pythonanywhere.com/).
 
 ## REF
 The Django Template used is referenced from Thales Bruno: https://github.com/thalesbruno/django_bootstrap
